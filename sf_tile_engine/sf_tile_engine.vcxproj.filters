@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="TinyXML">
+      <UniqueIdentifier>{92c03f48-5711-40d9-b567-43911ddfc332}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SfTileEngine">
+      <UniqueIdentifier>{ee00c534-f043-4b61-920b-980e80a0bbfb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SfTileEngine\Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="SfTileEngine\Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="SfTileEngine\Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>SfTileEngine\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="extlibs\TinyXML\tinyxml2.cpp">
+      <Filter>TinyXML</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SfTileEngine\sf_camera.cpp">
+      <Filter>SfTileEngine\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SfTileEngine\sf_layer.cpp">
+      <Filter>SfTileEngine\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SfTileEngine\sf_properties.cpp">
+      <Filter>SfTileEngine\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SfTileEngine\sf_smart_camera.cpp">
+      <Filter>SfTileEngine\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SfTileEngine\sf_tile.cpp">
+      <Filter>SfTileEngine\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SfTileEngine\sf_tilemap.cpp">
+      <Filter>SfTileEngine\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SfTileEngine\sf_tilemap_loader.cpp">
+      <Filter>SfTileEngine\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SfTileEngine\sf_tileset.cpp">
+      <Filter>SfTileEngine\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SfTileEngine\sf_world.cpp">
+      <Filter>SfTileEngine\Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\SfTileEngine\sf_world.h">
+      <Filter>SfTileEngine\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SfTileEngine\sf_tilemap.h">
+      <Filter>SfTileEngine\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sf_tile_engine.h">
+      <Filter>SfTileEngine\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="extlibs\TinyXML\tinyxml2.h">
+      <Filter>TinyXML</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SfTileEngine\sf_tileset.h">
+      <Filter>SfTileEngine\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SfTileEngine\sf_tile.h">
+      <Filter>SfTileEngine\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SfTileEngine\sf_properties.h">
+      <Filter>SfTileEngine\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SfTileEngine\sf_tilemap_loader.h">
+      <Filter>SfTileEngine\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SfTileEngine\sf_layer.h">
+      <Filter>SfTileEngine\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SfTileEngine\sf_camera.h">
+      <Filter>SfTileEngine\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SfTileEngine\sf_smart_camera.h">
+      <Filter>SfTileEngine\Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
