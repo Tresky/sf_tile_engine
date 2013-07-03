@@ -24,11 +24,10 @@
   using std::endl;
 #include <memory>
   using std::unique_ptr;
-  using std::shared_ptr;
 #include <string>
   using std::string;
-#include <deque>
-  using std::deque;
+#include <vector>
+  using std::vector;
 
 #include <SFML\Graphics.hpp>
 
@@ -173,11 +172,11 @@ private:
 
 
   /// Tileset to hold all tilesets in this tile map
-  shared_ptr<priv::SfTileset> tileset;
+  unique_ptr<priv::SfTileset> tileset;
 
 
-  /// FIFO deque holds all tile, image, and object layers
-  deque< unique_ptr<priv::SfLayer> > layers;
+  /// Vector holding all tile, image, and object layers
+  vector< unique_ptr<priv::SfLayer> > layers;
 
 
   /// Dimensions of the tile map in tiles

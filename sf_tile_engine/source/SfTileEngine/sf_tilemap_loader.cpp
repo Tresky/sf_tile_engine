@@ -95,7 +95,6 @@ bool SfTilemapLoader::LoadTilemap(const string _path, SfTilemap& _tilemap)
     }
     else
     {
-      temp_layer.tileset = temp_map.tileset;
       temp_map.layers.push_back(unique_ptr<SfLayer>(new SfLayer(temp_layer)));
     }
     layer_element = layer_element->NextSiblingElement("layer");

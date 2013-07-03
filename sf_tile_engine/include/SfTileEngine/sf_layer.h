@@ -38,7 +38,6 @@ namespace sftile
 /// Private engine namespace
 namespace priv
 {
-class SfTileset;
 class SfTilemapLoader;
 
 ////////////////////////////////////////////////////////////
@@ -84,12 +83,15 @@ public:
 
 
   ////////////////////////////////////////////////////////////
-  /// \brief Renders the layer to the screen.
+  /// \brief Gets the tile GID at a specific location in the
+  ///        layer.
   ///
-  /// \param _window SFML window to render to
+  /// \param _x X coordinate of the tile
+  /// \param _y Y coordinate of the tile
+  /// \return GID of the tile in question
   ///
   ////////////////////////////////////////////////////////////
-  void Render(sf::RenderWindow& _window);
+  int GetTileGID(const int _x, const int _y);
 
 private:
   /// Vector of the tile GIDs in the layer
@@ -98,10 +100,6 @@ private:
 
   /// Tile dimensions in pixels
   sf::Vector2i layer_dimensions;
-
-
-  /// Tileset of the map to use
-  shared_ptr<SfTileset> tileset;
 };
 
 }

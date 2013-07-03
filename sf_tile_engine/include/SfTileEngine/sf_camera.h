@@ -154,6 +154,25 @@ public:
   ///////////////////////////////////////////////////////////
   virtual void HandleEvents(sf::Event& _evt) = 0;
 
+
+  ///////////////////////////////////////////////////////////
+  ///
+  ///
+  ///
+  ///
+  ///////////////////////////////////////////////////////////
+  const sf::Vector2i GetTileOffset(const int _tile_width, const int _tile_height);
+
+
+  ///////////////////////////////////////////////////////////
+  /// \brief Calculates the bounds around the current portion
+  ///        of the map inside of the camera view.
+  ///
+  /// \return Bounds of the portion of the map in the camera
+  ///
+  ///////////////////////////////////////////////////////////
+  const sf::IntRect GetBounds(const int _tile_width, const int _tile_height);
+
 protected:
   /// Current position of the top-left corner of the camera
   sf::Vector2f position;
@@ -163,6 +182,9 @@ protected:
 
   /// Size of the camera in pixels (usually the size of the window)
   sf::Vector2f size;
+
+  /// Bounds around the portion of the map that is currently in the camera
+  sf::IntRect bounds;
 
   /// True if the position of the camera needs to be updated
   bool need_update;

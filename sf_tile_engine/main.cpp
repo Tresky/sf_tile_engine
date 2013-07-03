@@ -46,9 +46,25 @@ int main()
 	  return EXIT_FAILURE;
   }
 
+  // Create a Smart Camera object and set the size of the camera to
+  // the size of the window.
   sftile::SfSmartCamera camera(800.f, 600.f);
+  // Register the camera to the tile map by passing a pointer.
   test_map->RegisterCamera(&camera);
 
+  // Tracking mode is, by default, set to SF_TRACK_OFF, so
+  // we set the current tracking mode to SF_TRACK_KEYS_PRESS.
+  // This will track the W, A, S, and D keys for directional
+  // movement of the tile map. You can, however, change the keys
+  // with the function SfSmartCamera::SetTrackedKeys().
+  camera.SetTrackMode(sftile::SfTrackingMode::SF_TRACK_KEYS_PRESS);
+
+  // Here we create a clock for FPS management.
+  sf::Clock clock;
+  // I want my game to run at 60 frames per second, so
+  // I calculate the amount of milliseconds one frame will
+  // consume.
+  sf::Time frame_time = sf::milliseconds(1000 / 60.f);
   while (window.isOpen())
   {
     sf::Event evt;
@@ -68,6 +84,12 @@ int main()
     // Render the world
     world.Render(window);
     window.display();
+
+    // Using the calculated frame time, we subtract the amount
+    // of time the previous frame took and have the thread sleep
+    // the rest of the time.
+    sf::Time delay = frame_time - clock.restart();
+    sf::sleep(delay);
   }
 
   return 0;

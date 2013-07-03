@@ -118,11 +118,11 @@ public:
   ///
   /// \param _window SFML window to render to
   /// \param _id GID of tile to render
-  /// \param _x X position to render tile at (in tiles)
-  /// \param _y Y position to render tile at (in tiles)
+  /// \param _x X position to render tile at (in pixels)
+  /// \param _y Y position to render tile at (in pixels)
   ///
   ////////////////////////////////////////////////////////////
-  void RenderTile(sf::RenderWindow& _window, const unsigned int _id, const int _x, const int _y);
+  void RenderTile(sf::RenderWindow& _window, const unsigned int _id, const float _x, const float _y);
 
 private:
   /// Dimensions of the tiles in pixels

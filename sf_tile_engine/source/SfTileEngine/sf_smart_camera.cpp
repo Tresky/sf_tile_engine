@@ -52,6 +52,9 @@ SfSmartCamera& SfSmartCamera::operator=(const SfSmartCamera& _copy)
 void SfSmartCamera::SetPosition(const float _x, const float _y)
 {
   position = sf::Vector2f(_x, _y);
+  target = sf::Vector2f(_x, _y);
+
+  need_update = true;
 }
 
 
@@ -62,6 +65,9 @@ void SfSmartCamera::SetCenterPosition(const float _x, const float _y)
   float y = _y - size.y / 2.f;
 
   position = sf::Vector2f(x, y);
+  target = sf::Vector2f(x, y);
+
+  need_update = true;
 }
 
 
@@ -69,6 +75,8 @@ void SfSmartCamera::SetCenterPosition(const float _x, const float _y)
 void SfSmartCamera::MoveTo(const float _x, const float _y)
 {
   target = sf::Vector2f(_x, _y);
+
+  need_update = true;
 }
 
 
@@ -79,6 +87,8 @@ void SfSmartCamera::MoveCenterTo(const float _x, const float _y)
   float y = _y - size.y / 2.f;
 
   target = sf::Vector2f(x, y);
+
+  need_update = true;
 }
 
 
@@ -101,6 +111,7 @@ const sf::Vector2f SfSmartCamera::GetCenterPosition()
 void SfSmartCamera::SetTrackMode(const SfTrackingMode _mode)
 {
   tracking_mode = _mode;
+  cout << "Tracking Mode: " << tracking_mode << endl;
 }
 
 
@@ -125,25 +136,85 @@ void SfSmartCamera::SetTrackedMouseButton(MButton _button)
 void SfSmartCamera::Update()
 {
   if (tracking_mode == SF_TRACK_KEYS_PRESS)
+    HandleTrackKeysPress();
+
+  else if (tracking_mode == SF_TRACK_MOUSE_CLICKDRAG)
   {
 
   }
 
-  CalculatePosition();
+  if (need_update)
+    CalculatePosition();
 }
 
 
 ///////////////////////////////////////////////////////////
 void SfSmartCamera::HandleEvents(sf::Event& _evt)
 {
+  if (tracking_mode == SF_TRACK_MOUSE_CLICK)
+  {
 
+  }
 }
 
 
 ///////////////////////////////////////////////////////////
 void SfSmartCamera::CalculatePosition()
 {
+  const float x_dist = static_cast<float>(target.x - position.x);
+  const float y_dist = static_cast<float>(target.y - position.y);
 
+  const float distance = sqrt(pow(x_dist, 2) + pow(y_dist, 2));
+
+  /// A spin-off of Xeno's Paradox prohibits us from reaching the
+  /// target, so we can counter that by giving up when we are within 1 pixel. :)
+  if (distance <= 1.f)
+  {
+    position = target;
+    need_update = false;
+  }
+  else
+  {
+    float velocity = distance / 60.f;
+
+    /// If the velocity falls below 1.0, we won't reach the North Pole
+    if (velocity < 1.f)
+      velocity = 1.f;
+
+    const float velocity_x = x_dist * (velocity / distance);
+    const float velocity_y = y_dist * (velocity / distance);
+
+    position.x += velocity_x;
+    position.y += velocity_y;
+  }
+}
+
+
+void SfSmartCamera::HandleTrackKeysPress()
+{
+  float x = GetPosition().x;
+  float y = GetPosition().y;
+
+  if (sf::Keyboard::isKeyPressed(tracked_up))
+  {
+    y += 1.f;
+    SetPosition(x, y);
+  }
+  if (sf::Keyboard::isKeyPressed(tracked_down))
+  {
+    y -= 1.f;
+    SetPosition(x, y);
+  }
+  if (sf::Keyboard::isKeyPressed(tracked_left))
+  {
+    x += 1.f;
+    SetPosition(x, y);
+  }
+  if (sf::Keyboard::isKeyPressed(tracked_right))
+  {
+    x -= 1.f;
+    SetPosition(x, y);
+  }
 }
 
 }

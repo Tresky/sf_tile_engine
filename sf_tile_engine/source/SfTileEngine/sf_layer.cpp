@@ -18,8 +18,6 @@
 
 #include "..\..\include\SfTileEngine\sf_layer.h"
 
-#include "..\..\include\SfTileEngine\sf_tileset.h"
-
 /// Library namespace
 namespace sftile
 {
@@ -32,7 +30,6 @@ namespace priv
 SfLayer::SfLayer()
   : tile_gids()
   , layer_dimensions(-1, -1)
-  , tileset()
 {}
 
 
@@ -40,7 +37,6 @@ SfLayer::SfLayer()
 SfLayer::SfLayer(const SfLayer& _copy)
   : tile_gids(_copy.tile_gids)
   , layer_dimensions(_copy.layer_dimensions)
-  , tileset(_copy.tileset)
 {}
 
 
@@ -53,7 +49,6 @@ SfLayer& SfLayer::operator=(const SfLayer& _copy)
 
     std::swap(tile_gids, temp.tile_gids);
     std::swap(layer_dimensions, temp.layer_dimensions);
-    std::swap(tileset, temp.tileset);
   }
 
   return *this;
@@ -61,20 +56,13 @@ SfLayer& SfLayer::operator=(const SfLayer& _copy)
 
 
 ////////////////////////////////////////////////////////////
-void SfLayer::Render(sf::RenderWindow& _window)
+int SfLayer::GetTileGID(const int _x, const int _y)
 {
-  for (int y = 0; y < layer_dimensions.y; ++y)
-    for (int x = 0; x < layer_dimensions.x; ++x)
-    {
-      int gid = tile_gids.at(y).at(x) - 1;
-      if (gid < 0)
-        continue;
+  /// The TMX tileset stores tiles startring from 1.
+  /// Our vector stores them starting from 0.
+  int gid = tile_gids.at(_y).at(_x);
 
-      tileset->RenderTile(_window,   // Window to render to
-                          gid,       // GID of tile
-                          x,         // X coordinate in tiles
-                          y);        // Y coordinate in tiles
-    }
+  return gid;
 }
 
 }

@@ -23,7 +23,7 @@ enum SfTrackingMode
   SF_TRACK_KEYS_PRESS,
   SF_TRACK_MOUSE_CLICK,
   SF_TRACK_MOUSE_CLICKDRAG,
-  SF_TRACK_MOUSE_POSITION,
+  SF_TRACK_MOUSE_POSITION, // Under review
   SF_TRACK_OBJECT
 };
   
@@ -200,6 +200,14 @@ private:
   ///
   ///////////////////////////////////////////////////////////
   void CalculatePosition();
+
+
+  ///////////////////////////////////////////////////////////
+  /// \brief Handles calling the appropriate commands to move
+  ///        the map according the the tracked keys.
+  ///
+  ///////////////////////////////////////////////////////////
+  void HandleTrackKeysPress();
 
   /// Tracking mode of the smart camera
   SfTrackingMode tracking_mode;

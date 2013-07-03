@@ -5,6 +5,7 @@
 
 #include "..\..\include\SfTileEngine\sf_tileset.h"
 #include "..\..\include\SfTileEngine\sf_layer.h"
+#include "..\..\include\SfTileEngine\sf_camera.h"
 
 namespace sftile
 {
@@ -41,10 +42,11 @@ SfTilemap& SfTilemap::operator=(const SfTilemap& _copy)
     SfTilemap temp(_copy);
 
     std::swap(camera, temp.camera);
-    std::swap(tileset, temp.tileset);
     std::swap(layers, temp.layers);
     std::swap(map_dimensions, temp.map_dimensions);
     std::swap(tile_dimensions, temp.tile_dimensions);
+
+    tileset.reset(new priv::SfTileset(*_copy.tileset));
   }
 
   return *this;
@@ -68,23 +70,44 @@ void SfTilemap::RegisterCamera(SfCamera* _camera)
 ////////////////////////////////////////////////////////////
 void SfTilemap::HandleEvents(sf::Event _evt)
 {
-
+  camera->HandleEvents(_evt);
 }
 
 
 ////////////////////////////////////////////////////////////
 void SfTilemap::Update()
 {
-
+  camera->Update();
 }
 
 
 ////////////////////////////////////////////////////////////
 void SfTilemap::Render(sf::RenderWindow& _window)
 {
-  deque< unique_ptr<priv::SfLayer> >::iterator iter;
-  for (iter = layers.begin(); iter != layers.end(); ++iter)
-    iter->get()->Render(_window);
+  sf::Vector2i offset = camera->GetTileOffset(tile_dimensions.x, tile_dimensions.y);
+  sf::IntRect bounds = camera->GetBounds(tile_dimensions.x, tile_dimensions.y);
+
+  for (int y = 0, tile_y = bounds.top; y < bounds.height; ++y, ++tile_y)
+    for (int x = 0, tile_x = bounds.left; x < bounds.width; ++x, ++tile_x)
+    {
+
+      for (unsigned int l = 0; l < layers.size(); ++l)
+      {
+        if (tile_x < 0 || tile_y < 0)
+          continue;
+        if (tile_x >= map_dimensions.x || tile_y >= map_dimensions.y)
+          continue;
+
+        int gid = layers.at(l)->GetTileGID(tile_x, tile_y);
+
+        if (gid == 0)
+          continue;
+
+        const float pos_x = static_cast<float>(x * tile_dimensions.x - offset.x);
+        const float pos_y = static_cast<float>(y * tile_dimensions.y - offset.y);
+        tileset->RenderTile(_window, gid, pos_x, pos_y);
+      }
+    }
 }
 
 }
