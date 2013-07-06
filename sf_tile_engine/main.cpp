@@ -29,8 +29,17 @@ int main()
 {
   cout << "Program started" << endl;
 
+  // Create the reticule
+  sf::RectangleShape rect(sf::Vector2f(32.f, 32.f));
+  rect.setOrigin(12.f, 12.f);
+  rect.setOutlineColor(sf::Color::Red);
+  rect.setOutlineThickness(2.f);
+  rect.setFillColor(sf::Color(0, 0, 0, 0));
+  rect.setPosition(400, 300);
+
+
   // Create the SFML window
-  sf::RenderWindow window(sf::VideoMode(800, 600), "SfTileEngine Test");
+  sf::RenderWindow window(sf::VideoMode(800, 600), "SfTileEngine Test", sf::Style::Close | sf::Style::Titlebar);
   cout << "Window created" << endl;
 
   // Create the SfWorld object
@@ -53,11 +62,11 @@ int main()
   test_map->RegisterCamera(&camera);
 
   // Tracking mode is, by default, set to SF_TRACK_OFF, so
-  // we set the current tracking mode to SF_TRACK_KEYS_PRESS.
-  // This will track the W, A, S, and D keys for directional
-  // movement of the tile map. You can, however, change the keys
-  // with the function SfSmartCamera::SetTrackedKeys().
-  camera.SetTrackMode(sftile::SfTrackingMode::SF_TRACK_KEYS_PRESS);
+  // we set the current tracking mode to SF_TRACK_MOUSE_CLICK.
+  // This will track the Left Mouse Button for to determine the
+  // target position of the camera. You can, however, change the buttoin
+  // with the function SfSmartCamera::SetTrackedMouseButton().
+  camera.SetTrackMode(sftile::SfTrackingMode::SF_TRACK_MOUSE_CLICK);
 
   // Here we create a clock for FPS management.
   sf::Clock clock;
@@ -83,6 +92,9 @@ int main()
     window.clear();
     // Render the world
     world.Render(window);
+    
+    window.draw(rect);
+
     window.display();
 
     // Using the calculated frame time, we subtract the amount

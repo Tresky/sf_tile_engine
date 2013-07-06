@@ -138,11 +138,6 @@ void SfSmartCamera::Update()
   if (tracking_mode == SF_TRACK_KEYS_PRESS)
     HandleTrackKeysPress();
 
-  else if (tracking_mode == SF_TRACK_MOUSE_CLICKDRAG)
-  {
-
-  }
-
   if (need_update)
     CalculatePosition();
 }
@@ -152,9 +147,7 @@ void SfSmartCamera::Update()
 void SfSmartCamera::HandleEvents(sf::Event& _evt)
 {
   if (tracking_mode == SF_TRACK_MOUSE_CLICK)
-  {
-
-  }
+    HandleTrackMouseClick(_evt);
 }
 
 
@@ -190,6 +183,7 @@ void SfSmartCamera::CalculatePosition()
 }
 
 
+///////////////////////////////////////////////////////////
 void SfSmartCamera::HandleTrackKeysPress()
 {
   float x = GetPosition().x;
@@ -214,6 +208,18 @@ void SfSmartCamera::HandleTrackKeysPress()
   {
     x -= 1.f;
     SetPosition(x, y);
+  }
+}
+
+
+///////////////////////////////////////////////////////////
+void SfSmartCamera::HandleTrackMouseClick(sf::Event& _evt)
+{
+  if (_evt.type == sf::Event::MouseButtonPressed)
+  {
+    const sf::Vector2f mouse_position = GetPosition() + sf::Vector2f(_evt.mouseButton.x, _evt.mouseButton.y);
+
+    MoveCenterTo(mouse_position.x, mouse_position.y);
   }
 }
 

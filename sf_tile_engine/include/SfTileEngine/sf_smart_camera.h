@@ -209,6 +209,14 @@ private:
   ///////////////////////////////////////////////////////////
   void HandleTrackKeysPress();
 
+
+  ///////////////////////////////////////////////////////////
+  /// \brief Handles calling the appropriate commands to move
+  ///        the map according the the tracked mouse click.
+  ///
+  ///////////////////////////////////////////////////////////
+  void HandleTrackMouseClick(sf::Event& _evt);
+
   /// Tracking mode of the smart camera
   SfTrackingMode tracking_mode;
 
