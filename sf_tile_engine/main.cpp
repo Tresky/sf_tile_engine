@@ -66,14 +66,14 @@ int main()
   // This will track the Left Mouse Button for to determine the
   // target position of the camera. You can, however, change the buttoin
   // with the function SfSmartCamera::SetTrackedMouseButton().
-  camera.SetTrackMode(sftile::SfTrackingMode::SF_TRACK_MOUSE_CLICK);
+  camera.SetTrackMode(sftile::SfTrackingMode::SF_TRACK_MOUSE_CLICKDRAG);
 
   // Here we create a clock for FPS management.
   sf::Clock clock;
   // I want my game to run at 60 frames per second, so
   // I calculate the amount of milliseconds one frame will
   // consume.
-  sf::Time frame_time = sf::milliseconds(1000 / 60.f);
+  sf::Time frame_time = sf::milliseconds(sf::Int32(1000.f / 60.f));
   while (window.isOpen())
   {
     sf::Event evt;

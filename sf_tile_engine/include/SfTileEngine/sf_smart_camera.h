@@ -20,11 +20,11 @@ typedef sf::Mouse::Button MButton;
 enum SfTrackingMode
 {
   SF_TRACK_OFF = 0,
-  SF_TRACK_KEYS_PRESS,
-  SF_TRACK_MOUSE_CLICK,
-  SF_TRACK_MOUSE_CLICKDRAG,
-  SF_TRACK_MOUSE_POSITION, // Under review
-  SF_TRACK_OBJECT
+  SF_TRACK_KEYS_PRESS, // Supported
+  SF_TRACK_MOUSE_CLICK, // Supported
+  SF_TRACK_MOUSE_CLICKDRAG, // Supported
+  SF_TRACK_MOUSE_POSITION, // Unsupported: Under Review
+  SF_TRACK_OBJECT // Unsupported
 };
   
 ///////////////////////////////////////////////////////////
@@ -217,6 +217,16 @@ private:
   ///////////////////////////////////////////////////////////
   void HandleTrackMouseClick(sf::Event& _evt);
 
+
+  ///////////////////////////////////////////////////////////
+  /// \brief Handles calling the appropriate commands to move
+  ///        the map according the the tracked mouse click.
+  ///        Also tracks how far the mouse moves when the
+  ///        button is depressed.
+  ///
+  ///////////////////////////////////////////////////////////
+  void HandleTrackMouseClickDrag(sf::Event& _evt);
+
   /// Tracking mode of the smart camera
   SfTrackingMode tracking_mode;
 
@@ -225,6 +235,10 @@ private:
 
   /// Tracked mouse button for use in the SF_TRACK_MOUSE_CLICK, SF_TRACK_MOUSE_CLICKDRAG, and SF_TRACK_MOUSE_POSITION modes.
   MButton tracked_button;
+
+  /// Annoying variable that is used as the initial position for the click-drag track.
+  /// I couldn't think of a better way to accomplish this. Curse Sheogorath...
+  sf::Vector2f click_drag_initial_position;
 
 };
 

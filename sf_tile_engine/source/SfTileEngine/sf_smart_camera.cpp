@@ -138,6 +138,9 @@ void SfSmartCamera::Update()
   if (tracking_mode == SF_TRACK_KEYS_PRESS)
     HandleTrackKeysPress();
 
+  else if (tracking_mode == SF_TRACK_MOUSE_CLICKDRAG)
+    click_drag_initial_position = sf::Vector2f(sf::Mouse::getPosition());
+
   if (need_update)
     CalculatePosition();
 }
@@ -148,6 +151,9 @@ void SfSmartCamera::HandleEvents(sf::Event& _evt)
 {
   if (tracking_mode == SF_TRACK_MOUSE_CLICK)
     HandleTrackMouseClick(_evt);
+
+  else if (tracking_mode == SF_TRACK_MOUSE_CLICKDRAG)
+    HandleTrackMouseClickDrag(_evt);
 }
 
 
@@ -160,7 +166,7 @@ void SfSmartCamera::CalculatePosition()
   const float distance = sqrt(pow(x_dist, 2) + pow(y_dist, 2));
 
   /// A spin-off of Xeno's Paradox prohibits us from reaching the
-  /// target, so we can counter that by giving up when we are within 1 pixel. :)
+  /// target, so we can counter that by giving up when we are within 1 pixel.
   if (distance <= 1.f)
   {
     position = target;
@@ -170,7 +176,8 @@ void SfSmartCamera::CalculatePosition()
   {
     float velocity = distance / 60.f;
 
-    /// If the velocity falls below 1.0, we won't reach the North Pole
+    /// If our velocity falls below 1.0, we will never enter
+    /// Sovngarde!
     if (velocity < 1.f)
       velocity = 1.f;
 
@@ -215,11 +222,37 @@ void SfSmartCamera::HandleTrackKeysPress()
 ///////////////////////////////////////////////////////////
 void SfSmartCamera::HandleTrackMouseClick(sf::Event& _evt)
 {
-  if (_evt.type == sf::Event::MouseButtonPressed)
+  if (_evt.type == sf::Event::MouseButtonPressed && _evt.mouseButton.button == tracked_button)
   {
-    const sf::Vector2f mouse_position = GetPosition() + sf::Vector2f(_evt.mouseButton.x, _evt.mouseButton.y);
+    const sf::Vector2f mouse_position = GetPosition() + sf::Vector2f(static_cast<float>(_evt.mouseButton.x),
+                                                                     static_cast<float>(_evt.mouseButton.y));
 
     MoveCenterTo(mouse_position.x, mouse_position.y);
+  }
+}
+
+
+///////////////////////////////////////////////////////////
+/// This can be viewed on a frame by frame basis. In our 
+/// Update() method, we are grabbing the mouse position 
+/// at the beginning of the frame.
+///
+///////////////////////////////////////////////////////////
+void SfSmartCamera::HandleTrackMouseClickDrag(sf::Event& _evt)
+{
+  if (sf::Mouse::isButtonPressed(tracked_button) && _evt.type == sf::Event::MouseMoved)
+  {
+    /// This is the current position after moving for one frame.
+    const sf::Vector2f current_position = sf::Vector2f(sf::Mouse::getPosition());
+
+    /// Calculate the distance that was moved in our one frame.
+    const sf::Vector2f distance = current_position - click_drag_initial_position;
+
+    /// Calculate the new position.
+    const sf::Vector2f new_position = GetPosition() - distance;
+
+    /// Go-go gadget!
+    SetPosition(new_position.x, new_position.y);
   }
 }
 

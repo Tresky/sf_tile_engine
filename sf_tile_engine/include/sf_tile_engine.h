@@ -19,8 +19,20 @@
 #ifndef SF_TILE_ENGINE_H
 #define SF_TILE_ENGINE_H
 
+/// Note: This engine utilizes C++11 for smart pointers so as to help avoid
+/// my own personal human errors to keep the gates of Oblivion sealed
+/// shut with the power of the Nine Divines.
+
+/// Enjoy the engine and may Akatosh watch over your code. ;)
+
 #include "SfTileEngine\sf_world.h"
 #include "SfTileEngine\sf_tilemap.h"
 #include "SfTileEngine\sf_smart_camera.h"
+
+/// Please be sure to report any bugs or discrepencies to me. You can report
+/// them in various methods:
+/// - GitHub: Tresky
+/// - Email: tnpetresky@gmail.com
+/// - Google+: Tyler Petresky
 
 #endif // SF_TILE_ENGINE_H
