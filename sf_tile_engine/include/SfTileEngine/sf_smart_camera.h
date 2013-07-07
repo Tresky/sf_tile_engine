@@ -227,6 +227,13 @@ private:
   ///////////////////////////////////////////////////////////
   void HandleTrackMouseClickDrag(sf::Event& _evt);
 
+  ///////////////////////////////////////////////////////////
+  /// \brief Handles calling the appropriate commands to
+  /// continuously center the camera of a specific entity.
+  ///
+  ///////////////////////////////////////////////////////////
+  void HandleTrackObject();
+
   /// Tracking mode of the smart camera
   SfTrackingMode tracking_mode;
 

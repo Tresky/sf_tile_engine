@@ -51,6 +51,9 @@
     <ClCompile Include="source\SfTileEngine\sf_world.cpp">
       <Filter>SfTileEngine\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="source\SfTileEngine\sf_entity.cpp">
+      <Filter>SfTileEngine\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\SfTileEngine\sf_world.h">
@@ -81,6 +84,9 @@
       <Filter>SfTileEngine\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\SfTileEngine\sf_smart_camera.h">
+      <Filter>SfTileEngine\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SfTileEngine\sf_entity.h">
       <Filter>SfTileEngine\Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -71,6 +71,7 @@
     <ClCompile Include="extlibs\TinyXML\tinyxml2.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="source\SfTileEngine\sf_camera.cpp" />
+    <ClCompile Include="source\SfTileEngine\sf_entity.cpp" />
     <ClCompile Include="source\SfTileEngine\sf_layer.cpp" />
     <ClCompile Include="source\SfTileEngine\sf_smart_camera.cpp" />
     <ClCompile Include="source\SfTileEngine\sf_tile.cpp" />
@@ -82,6 +83,7 @@
   <ItemGroup>
     <ClInclude Include="extlibs\TinyXML\tinyxml2.h" />
     <ClInclude Include="include\SfTileEngine\sf_camera.h" />
+    <ClInclude Include="include\SfTileEngine\sf_entity.h" />
     <ClInclude Include="include\SfTileEngine\sf_layer.h" />
     <ClInclude Include="include\SfTileEngine\sf_smart_camera.h" />
     <ClInclude Include="include\SfTileEngine\sf_tile.h" />

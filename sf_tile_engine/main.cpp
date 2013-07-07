@@ -35,11 +35,11 @@ int main()
   rect.setOutlineColor(sf::Color::Red);
   rect.setOutlineThickness(2.f);
   rect.setFillColor(sf::Color(0, 0, 0, 0));
-  rect.setPosition(400, 300);
+  rect.setPosition(850, 500);
 
 
   // Create the SFML window
-  sf::RenderWindow window(sf::VideoMode(800, 600), "SfTileEngine Test", sf::Style::Close | sf::Style::Titlebar);
+  sf::RenderWindow window(sf::VideoMode(1900, 1000), "SfTileEngine Test", sf::Style::Close | sf::Style::Titlebar);
   cout << "Window created" << endl;
 
   // Create the SfWorld object
@@ -47,7 +47,7 @@ int main()
 
   // Create a pointer to an SfTilemap and set it
   // to point to a map being loaded into the SfWorld
-  sftile::SfTilemap* test_map = world.LoadTilemap("test", "test.tmx");
+  sftile::SfTilemap* test_map = world.LoadTilemap("test", "demo_map.tmx");
   if (!test_map)
   {
 	  cout << "Failed to load map: test_map" << endl;
@@ -57,7 +57,7 @@ int main()
 
   // Create a Smart Camera object and set the size of the camera to
   // the size of the window.
-  sftile::SfSmartCamera camera(800.f, 600.f);
+  sftile::SfSmartCamera camera(1900.f, 1000.f);
   // Register the camera to the tile map by passing a pointer.
   test_map->RegisterCamera(&camera);
 
@@ -104,5 +104,5 @@ int main()
     sf::sleep(delay);
   }
 
-  return 0;
+  return EXIT_SUCCESS;
 }
