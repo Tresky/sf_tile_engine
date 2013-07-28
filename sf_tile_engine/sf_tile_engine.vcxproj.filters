@@ -21,9 +21,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>SfTileEngine\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="extlibs\TinyXML\tinyxml2.cpp">
       <Filter>TinyXML</Filter>
     </ClCompile>
@@ -87,6 +84,9 @@
       <Filter>SfTileEngine\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\SfTileEngine\sf_entity.h">
+      <Filter>SfTileEngine\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SfTileEngine\sf_dll_macro.h">
       <Filter>SfTileEngine\Header Files</Filter>
     </ClInclude>
   </ItemGroup>

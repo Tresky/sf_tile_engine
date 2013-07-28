@@ -7,6 +7,8 @@
 
 #include <SFML\Graphics.hpp>
 
+#include "sf_dll_macro.h"
+
 /// Engine namespace
 namespace sftile
 {
@@ -17,7 +19,7 @@ namespace priv
   class SfTilemapLoader;
 }
 
-class SfEntity
+class SF_TILE_API SfEntity
 {
 friend class priv::SfTilemapLoader;
 public:

@@ -6,6 +6,7 @@
   using std::endl;
 
 #include "sf_camera.h"
+#include "sf_dll_macro.h"
 
 /// Library namespace
 namespace sftile
@@ -19,12 +20,10 @@ typedef sf::Mouse::Button MButton;
 /// is currently in.
 enum SfTrackingMode
 {
-  SF_TRACK_OFF = 0,
+  SF_TRACK_OFF = 0, // Supported
   SF_TRACK_KEYS_PRESS, // Supported
   SF_TRACK_MOUSE_CLICK, // Supported
   SF_TRACK_MOUSE_CLICKDRAG, // Supported
-  SF_TRACK_MOUSE_POSITION, // Unsupported: Under Review
-  SF_TRACK_OBJECT // Unsupported
 };
   
 ///////////////////////////////////////////////////////////
@@ -36,7 +35,7 @@ enum SfTrackingMode
 /// SfCamera.
 ///
 ///////////////////////////////////////////////////////////
-class SfSmartCamera : public SfCamera
+class SF_TILE_API SfSmartCamera : public SfCamera
 {
 public:
   ////////////////////////////////////////////////////////////

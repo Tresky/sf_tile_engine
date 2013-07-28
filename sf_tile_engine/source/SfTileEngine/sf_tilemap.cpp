@@ -13,7 +13,7 @@ namespace sftile
 ////////////////////////////////////////////////////////////
 SfTilemap::SfTilemap()
   : camera(nullptr)
-  , tileset(new priv::SfTileset())
+  , tileset()
   , layers()
   , map_dimensions(-1, -1)
   , tile_dimensions(32, 32)
@@ -24,14 +24,12 @@ SfTilemap::SfTilemap()
 ////////////////////////////////////////////////////////////
 SfTilemap::SfTilemap(const SfTilemap& _copy)
   : camera(_copy.camera)
-  , tileset(new priv::SfTileset(*_copy.tileset))
+  , tileset(_copy.tileset)
+  , layers(_copy.layers)
   , map_dimensions(_copy.map_dimensions)
   , tile_dimensions(_copy.tile_dimensions)
   , version(_copy.version)
-{
-  for (unsigned int i = 0; i < _copy.layers.size(); ++i)
-    layers.emplace_back( unique_ptr<priv::SfLayer>(new priv::SfLayer(*_copy.layers.at(i).get())) );
-}
+{}
 
 
 ////////////////////////////////////////////////////////////
@@ -42,11 +40,10 @@ SfTilemap& SfTilemap::operator=(const SfTilemap& _copy)
     SfTilemap temp(_copy);
 
     std::swap(camera, temp.camera);
+    std::swap(tileset, temp.tileset);
     std::swap(layers, temp.layers);
     std::swap(map_dimensions, temp.map_dimensions);
     std::swap(tile_dimensions, temp.tile_dimensions);
-
-    tileset.reset(new priv::SfTileset(*_copy.tileset));
   }
 
   return *this;
@@ -98,14 +95,14 @@ void SfTilemap::Render(sf::RenderWindow& _window)
         if (tile_x >= map_dimensions.x || tile_y >= map_dimensions.y)
           continue;
 
-        int gid = layers.at(l)->GetTileGID(tile_x, tile_y);
+        int gid = layers.at(l).GetTileGID(tile_x, tile_y);
 
         if (gid == 0)
           continue;
 
         const float pos_x = static_cast<float>(x * tile_dimensions.x - offset.x);
         const float pos_y = static_cast<float>(y * tile_dimensions.y - offset.y);
-        tileset->RenderTile(_window, gid, pos_x, pos_y);
+        tileset.RenderTile(_window, gid, pos_x, pos_y);
       }
     }
 }

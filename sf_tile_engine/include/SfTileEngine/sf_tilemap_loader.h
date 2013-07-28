@@ -29,6 +29,8 @@
 
 #include <SFML\Graphics.hpp>
 
+#include "sf_dll_macro.h"
+
 /// TinyXML namespace
 namespace tinyxml2
 {
@@ -58,7 +60,7 @@ class SfLayer;
 ///
 ////////////////////////////////////////////////////////////
 
-class SfTilemapLoader
+class SF_TILE_API SfTilemapLoader
 {
 public:
   ////////////////////////////////////////////////////////////

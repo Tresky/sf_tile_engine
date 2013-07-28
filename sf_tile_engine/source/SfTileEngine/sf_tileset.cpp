@@ -13,25 +13,21 @@ namespace sftile
 namespace priv
 {
 
-// Default constructor
+////////////////////////////////////////////////////////////
 SfTileset::SfTileset()
   : tile_dimensions(32, 32)
   , tiles()
   , tileset_image()
 {}
 
-// Copy constructor
+////////////////////////////////////////////////////////////
 SfTileset::SfTileset(const SfTileset& _copy)
   : tile_dimensions(_copy.tile_dimensions)
+  , tiles(_copy.tiles)
   , tileset_image(_copy.tileset_image)
-{
-  //properties.reset(_copy.properties.get());
+{}
 
-  for (unsigned int i = 0; i < _copy.tiles.size(); ++i)
-    tiles.emplace_back( unique_ptr<SfTile>(new SfTile(*_copy.tiles.at(i).get())));
-}
-
-// Assignment operator
+////////////////////////////////////////////////////////////
 SfTileset& SfTileset::operator=(const SfTileset& _copy)
 {
   if (this != &_copy)
@@ -52,23 +48,23 @@ SfTileset::~SfTileset()
 {}
 
 
-///
-SfTile* SfTileset::GetTile(const unsigned int _id)
+////////////////////////////////////////////////////////////
+SfTile SfTileset::GetTile(const unsigned int _id)
 {
-  return tiles.at(_id - 1).get();
+  return tiles.at(_id - 1);
 }
 
-///
+////////////////////////////////////////////////////////////
 const int SfTileset::GetNumTiles()
 {
   return tiles.size();
 }
 
-///
+////////////////////////////////////////////////////////////
 void SfTileset::RenderTile(sf::RenderWindow& _window, const unsigned int _id, const float _x, const float _y)
 {
-  SfTile* tile = GetTile(_id);
-  sf::Sprite sprite(tileset_image, tile->GetRect());
+  SfTile tile = GetTile(_id);
+  sf::Sprite sprite(tileset_image, tile.GetRect());
   sprite.setPosition(_x, _y);
 
   _window.draw(sprite);

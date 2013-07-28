@@ -29,6 +29,8 @@
 
 #include <SFML\Graphics.hpp>
 
+#include "sf_dll_macro.h"
+
 /// Engine namespace
 namespace sftile
 {
@@ -54,7 +56,7 @@ class SfTilemapLoader;
 /// entire tileset image.
 ///
 ////////////////////////////////////////////////////////////
-class SfTileset
+class SF_TILE_API SfTileset
 {
 friend class priv::SfTilemapLoader;
 public:
@@ -73,7 +75,7 @@ public:
   /// Copies an existing tileset.
   ///
   ////////////////////////////////////////////////////////////
-  explicit SfTileset(const SfTileset& _copy);
+  SfTileset(const SfTileset& _copy);
 
 
   ////////////////////////////////////////////////////////////
@@ -100,7 +102,7 @@ public:
   /// \return Pointer to tile if tile exists with GID
   ///
   ////////////////////////////////////////////////////////////
-  SfTile* GetTile(const unsigned int _id);
+  SfTile GetTile(const unsigned int _id);
 
 
   ////////////////////////////////////////////////////////////
@@ -130,7 +132,7 @@ private:
 
 
   /// Vector of tiles
-  vector< unique_ptr<SfTile> > tiles;
+  vector<SfTile> tiles;
 
 
   /// Texture of the entire tileset in full

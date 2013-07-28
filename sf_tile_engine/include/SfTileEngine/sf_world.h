@@ -31,16 +31,13 @@
 
 #include <SFML\Graphics.hpp>
 
+#include "sf_tilemap_loader.h"
+#include "sf_dll_macro.h"
+
 /// Engine namespace
 namespace sftile
 {
 class SfTilemap;
-
-/// Private engine namespace
-namespace priv
-{
-class SfTilemapLoader;
-}
 
 ////////////////////////////////////////////////////////////
 /// \class SfWorld
@@ -98,7 +95,7 @@ class SfTilemapLoader;
 /// \endcode
 ////////////////////////////////////////////////////////////
 
-class SfWorld
+class SF_TILE_API SfWorld
 {
 public:
 	////////////////////////////////////////////////////////////
@@ -116,7 +113,7 @@ public:
   /// Copies an existing world object.
   ///
   ////////////////////////////////////////////////////////////
-  explicit SfWorld(const SfWorld& _copy);
+  SfWorld(const SfWorld& _copy);
 
 
   ////////////////////////////////////////////////////////////
@@ -126,13 +123,6 @@ public:
   ///
   ////////////////////////////////////////////////////////////
   SfWorld& operator=(const SfWorld& _copy);
-
-
-  ///////////////////////////////////////////////////////////
-  /// \brief Destructor
-  ///
-  ///////////////////////////////////////////////////////////
-  ~SfWorld();
 
 
   ////////////////////////////////////////////////////////////
@@ -215,11 +205,11 @@ private:
 
 
   /// Takes care of loading the tile maps
-  unique_ptr<priv::SfTilemapLoader> loader;
+  priv::SfTilemapLoader loader;
 
 
   /// Tile maps
-  map<string, unique_ptr<SfTilemap> > tilemaps;
+  map<string, SfTilemap> tilemaps;
 
 
   /// String ID of currently visible tile map

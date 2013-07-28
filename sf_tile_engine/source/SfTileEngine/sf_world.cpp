@@ -11,7 +11,7 @@ namespace sftile
 
 ////////////////////////////////////////////////////////////
 SfWorld::SfWorld()
-  : loader(new priv::SfTilemapLoader())
+  : loader()
   , tilemaps()
   , current_id("null")
 {
@@ -21,14 +21,10 @@ SfWorld::SfWorld()
 
 ////////////////////////////////////////////////////////////
 SfWorld::SfWorld(const SfWorld& _copy)
-  : current_id(_copy.current_id)
-{
-  loader.reset(_copy.loader.get());
-
-  map<string, unique_ptr<SfTilemap> >::const_iterator iter;
-  for (iter = _copy.tilemaps.begin(); iter != _copy.tilemaps.end(); ++iter)
-    tilemaps.emplace(iter->first, unique_ptr<SfTilemap>(iter->second.get()));
-}
+  : loader(_copy.loader)
+  , tilemaps(_copy.tilemaps)
+  , current_id(_copy.current_id)
+{}
 
 
 ////////////////////////////////////////////////////////////
@@ -47,11 +43,6 @@ SfWorld& SfWorld::operator=(const SfWorld& _copy)
 }
 
 
-///////////////////////////////////////////////////////////
-SfWorld::~SfWorld()
-{}
-
-
 ////////////////////////////////////////////////////////////
 // If an SfTilemap with the specifed ID already exists,
 // we return a pointer to it. If it doesn't we attempt to
@@ -64,13 +55,13 @@ SfTilemap* SfWorld::LoadTilemap(string _id, string _path)
   
   // Check to make sure the SfTilemap doesn't already exists.
   // If not, then attempt to parse the data for it.
-  if (!MapExists(_id) && !loader->LoadTilemap(_path, tilemap))
+  if (!MapExists(_id) && !loader.LoadTilemap(_path, tilemap))
   {
     cout << "Failed to load SfTilemap from path: " << _path << endl;
     return nullptr;
   }
   
-  tilemaps.emplace(_id, unique_ptr<SfTilemap>(new SfTilemap(tilemap)));
+  tilemaps.emplace(_id, tilemap);
 
   cout << "Loaded SfTilemap from path: " << _path << endl;
 
@@ -89,7 +80,7 @@ SfTilemap* SfWorld::GetTilemap(string _id)
     return nullptr;
   }
   else
-    return tilemaps.at(_id).get();
+    return &tilemaps.at(_id);
 }
 
 

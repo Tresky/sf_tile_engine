@@ -31,6 +31,8 @@
 
 #include <SFML\Graphics.hpp>
 
+#include "sf_dll_macro.h"
+
 /// Engine namespace
 namespace sftile
 {
@@ -51,7 +53,7 @@ class SfTilemapLoader;
 ///
 ////////////////////////////////////////////////////////////
 
-class SfLayer
+class SF_TILE_API SfLayer
 {
 friend class priv::SfTilemapLoader;
 public:
@@ -70,7 +72,7 @@ public:
   /// Copies an existing layer.
   ///
   ////////////////////////////////////////////////////////////
-  explicit SfLayer(const SfLayer& _copy);
+  SfLayer(const SfLayer& _copy);
 
 
   ////////////////////////////////////////////////////////////

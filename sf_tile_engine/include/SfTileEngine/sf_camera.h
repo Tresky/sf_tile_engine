@@ -25,6 +25,8 @@
 
 #include <SFML\Graphics.hpp>
 
+#include "sf_dll_macro.h"
+
 /// Library namespace
 namespace sftile
 {
@@ -40,7 +42,7 @@ namespace sftile
 ///
 ///
 ////////////////////////////////////////////////////////////
-class SfCamera
+class SF_TILE_API SfCamera
 {
 public:
   ////////////////////////////////////////////////////////////

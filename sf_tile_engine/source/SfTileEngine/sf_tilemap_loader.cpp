@@ -73,7 +73,7 @@ bool SfTilemapLoader::LoadTilemap(const string _path, SfTilemap& _tilemap)
   const XMLElement* tileset_element = map_element->FirstChildElement("tileset");
   while (tileset_element)
   {
-    if (!ParseTileset(tileset_element, *temp_map.tileset))
+    if (!ParseTileset(tileset_element, temp_map.tileset))
     {
       cout << "Failed to parse tileset" << endl;
       return false;
@@ -95,7 +95,7 @@ bool SfTilemapLoader::LoadTilemap(const string _path, SfTilemap& _tilemap)
     }
     else
     {
-      temp_map.layers.push_back(unique_ptr<SfLayer>(new SfLayer(temp_layer)));
+      temp_map.layers.push_back(temp_layer);
     }
     layer_element = layer_element->NextSiblingElement("layer");
   }
@@ -148,7 +148,7 @@ bool SfTilemapLoader::ParseTileset(const XMLElement* _element, SfTileset& _tiles
       sf::IntRect rect(x, y, _tileset.tile_dimensions.x, _tileset.tile_dimensions.y);
 
       SfTile temp_tile(gid, rect);
-      _tileset.tiles.push_back(unique_ptr<SfTile>(new SfTile(temp_tile)));
+      _tileset.tiles.push_back(temp_tile);
     }
 
   // Parse the properties of the tileset

@@ -31,6 +31,10 @@
 
 #include <SFML\Graphics.hpp>
 
+#include "sf_layer.h"
+#include "sf_tileset.h"
+#include "sf_dll_macro.h"
+
 /// Engine namespace
 namespace sftile
 {
@@ -39,8 +43,6 @@ class SfCamera;
 /// Private engine namespace
 namespace priv
 {
-class SfTileset;
-class SfLayer;
 class SfTilemapLoader;
 
 /// Orientation of the tile map.
@@ -90,7 +92,7 @@ enum TilemapCompression
 ///
 ////////////////////////////////////////////////////////////
 
-class SfTilemap
+class SF_TILE_API SfTilemap
 {
 friend class priv::SfTilemapLoader;
 public:
@@ -172,11 +174,11 @@ private:
 
 
   /// Tileset to hold all tilesets in this tile map
-  unique_ptr<priv::SfTileset> tileset;
+  priv::SfTileset tileset;
 
 
   /// Vector holding all tile, image, and object layers
-  vector< unique_ptr<priv::SfLayer> > layers;
+  vector<priv::SfLayer> layers;
 
 
   /// Dimensions of the tile map in tiles
