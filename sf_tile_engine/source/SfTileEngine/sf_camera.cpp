@@ -9,7 +9,7 @@ SfCamera::SfCamera(const float _width, const float _height)
   : position(0.f, 0.f)
   , target(0.f, 0.f)
   , size(_width, _height)
-  , bounds(0, 0, _width, _height)
+  , bounds(0, 0, static_cast<int>(_width), static_cast<int>(_height))
   , need_update(false)
 {}
 

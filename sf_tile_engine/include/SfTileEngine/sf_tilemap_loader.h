@@ -41,12 +41,14 @@ namespace tinyxml2
 namespace sftile
 {
 class SfTilemap;
+class SfObject;
 
 /// Private engine namespace
 namespace priv
 {
 class SfTileset;
-class SfLayer;
+class SfTileLayer;
+class SfObjectLayer;
 
 ////////////////////////////////////////////////////////////
 /// \class: SfTilemapLoader
@@ -54,7 +56,7 @@ class SfLayer;
 ///
 /// This is a private class used to load all tile maps
 /// into the engine. This loader class is a friend to the
-/// SfTilemap, SfTileset, SfLayer, and SfProperties classes.
+/// SfTilemap, SfTileset, SfTileLayer, and SfProperties classes.
 /// This allows the class to piece together a tile map bit
 /// by bit.
 ///
@@ -73,6 +75,8 @@ public:
   /// \param _path Path to the TMX file
   /// \param _tilemap Tile map to save data to
   ///
+  /// \return True if successful
+  ///
   ////////////////////////////////////////////////////////////
   bool LoadTilemap(const string _path, SfTilemap& _tilemap);
 
@@ -86,6 +90,8 @@ private:
   /// \param _element XML element containing tileset data
   /// \param _tileset Tileset to save the data in
   ///
+  /// \return True if successful
+  ///
   ////////////////////////////////////////////////////////////
   bool ParseTileset(const tinyxml2::XMLElement* _element, SfTileset& _tileset);
 
@@ -98,8 +104,10 @@ private:
   ///
   /// \param _element XML element containing layer data
   ///
+  /// \return True if successful
+  ///
   ////////////////////////////////////////////////////////////
-  bool ParseLayer(const tinyxml2::XMLElement* _element, SfLayer& _layer);
+  bool ParseTileLayer(const tinyxml2::XMLElement* _element, SfTileLayer& _tile_layer);
 
 
   ////////////////////////////////////////////////////////////
@@ -108,7 +116,7 @@ private:
   ///
   ///
   ////////////////////////////////////////////////////////////
-  bool ParseXmlLayer(const tinyxml2::XMLElement* _element, SfLayer& _layer);
+  bool ParseXmlTileLayer(const tinyxml2::XMLElement* _element, SfTileLayer& _tile_layer);
 
 
   ////////////////////////////////////////////////////////////
@@ -117,7 +125,7 @@ private:
   ///
   ///
   ////////////////////////////////////////////////////////////
-  bool ParseBase64Layer(const tinyxml2::XMLElement* _element, SfLayer& _layer);
+  bool ParseBase64TileLayer(const tinyxml2::XMLElement* _element, SfTileLayer& _tile_layer);
 
 
   ////////////////////////////////////////////////////////////
@@ -126,7 +134,30 @@ private:
   ///
   ///
   ////////////////////////////////////////////////////////////
-  bool ParseCsvLayer(const tinyxml2::XMLElement* _element, SfLayer& _layer);
+  bool ParseCsvTileLayer(const tinyxml2::XMLElement* _element, SfTileLayer& _tile_layer);
+
+
+  ////////////////////////////////////////////////////////////
+  /// \brief Parses an object layer from TMX data.
+  ///
+  /// \param _element XML element containing object layer data
+  ///
+  /// \return True if successful
+  ///
+  ////////////////////////////////////////////////////////////
+  bool ParseObjectLayer(const tinyxml2::XMLElement* _element, SfObjectLayer& _object_layer);
+
+
+  ////////////////////////////////////////////////////////////
+  /// \brief Parses an object from TMX data.
+  ///
+  /// \param _element XML element containing object data
+  ///
+  /// \return True if successful
+  ///
+  ////////////////////////////////////////////////////////////
+  bool ParseObject(const tinyxml2::XMLElement* _element, SfObject& _object);
+
 };
 
 }

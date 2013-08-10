@@ -128,7 +128,7 @@ public:
   ////////////////////////////////////////////////////////////
   /// \brief Loads a tile map from a TMX file.
   ///
-  /// The tile ap is stored as an instantiated object here
+  /// The tile map is stored as an instantiated object here
   /// in the world object. However, a pointer to that
   /// specific tile map is stored outside where the user
   /// can access it, so they can maintain control over 

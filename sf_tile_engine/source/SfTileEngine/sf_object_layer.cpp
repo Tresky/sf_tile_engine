@@ -16,7 +16,7 @@
 /// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ////////////////////////////////////////////////////////////
 
-#include "..\..\include\SfTileEngine\sf_layer.h"
+#include "..\..\include\SfTileEngine\sf_object_layer.h"
 
 /// Library namespace
 namespace sftile
@@ -27,27 +27,27 @@ namespace priv
 {
 
 ////////////////////////////////////////////////////////////
-SfLayer::SfLayer()
-  : tile_gids()
+SfObjectLayer::SfObjectLayer()
+  : objects()
   , layer_dimensions(-1, -1)
 {}
 
 
 ////////////////////////////////////////////////////////////
-SfLayer::SfLayer(const SfLayer& _copy)
-  : tile_gids(_copy.tile_gids)
+SfObjectLayer::SfObjectLayer(const SfObjectLayer& _copy)
+  : objects(_copy.objects)
   , layer_dimensions(_copy.layer_dimensions)
 {}
 
 
 ////////////////////////////////////////////////////////////
-SfLayer& SfLayer::operator=(const SfLayer& _copy)
+SfObjectLayer& SfObjectLayer::operator=(const SfObjectLayer& _copy)
 {
   if (this != &_copy)
   {
-    SfLayer temp(_copy);
+    SfObjectLayer temp(_copy);
 
-    std::swap(tile_gids, temp.tile_gids);
+    std::swap(objects, temp.objects);
     std::swap(layer_dimensions, temp.layer_dimensions);
   }
 
@@ -56,13 +56,9 @@ SfLayer& SfLayer::operator=(const SfLayer& _copy)
 
 
 ////////////////////////////////////////////////////////////
-int SfLayer::GetTileGID(const int _x, const int _y)
+SfObject* SfObjectLayer::GetObject(unsigned int _index)
 {
-  /// The TMX tileset stores tiles startring from 1.
-  /// Our vector stores them starting from 0.
-  int gid = tile_gids.at(_y).at(_x);
-
-  return gid;
+  return &objects.at(_index);
 }
 
 }

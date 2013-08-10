@@ -16,8 +16,8 @@
 /// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ////////////////////////////////////////////////////////////
 
-#ifndef SF_LAYER_H
-#define SF_LAYER_H
+#ifndef SF_TILE_LAYER_H
+#define SF_TILE_LAYER_H
 
 #include <iostream>
   using std::cout;
@@ -26,8 +26,6 @@
   using std::string;
 #include <vector>
   using std::vector;
-#include <memory>
-  using std::shared_ptr;
 
 #include <SFML\Graphics.hpp>
 
@@ -42,20 +40,9 @@ namespace priv
 {
 class SfTilemapLoader;
 
-////////////////////////////////////////////////////////////
-/// \class SfLayer
-/// \brief Stores the GID's of the tiles in the layer
-///        and renders them.
-/// 
-/// This class holds all of the layer data of the tile map.
-/// This include tile GID's, a pointer to the tileset, and
-/// any other necessary data for rendering the layers.
-///
-////////////////////////////////////////////////////////////
-
-class SF_TILE_API SfLayer
+class SF_TILE_API SfTileLayer
 {
-friend class priv::SfTilemapLoader;
+friend class SfTilemapLoader;
 public:
   ////////////////////////////////////////////////////////////
   /// \brief Default constructor
@@ -63,7 +50,7 @@ public:
   /// Creates an empty layer object.
   ///
   ////////////////////////////////////////////////////////////
-  explicit SfLayer();
+  explicit SfTileLayer();
 
 
   ////////////////////////////////////////////////////////////
@@ -72,7 +59,7 @@ public:
   /// Copies an existing layer.
   ///
   ////////////////////////////////////////////////////////////
-  SfLayer(const SfLayer& _copy);
+  SfTileLayer(const SfTileLayer& _copy);
 
 
   ////////////////////////////////////////////////////////////
@@ -81,8 +68,7 @@ public:
   /// Copies an existing layer.
   ///
   ////////////////////////////////////////////////////////////
-  SfLayer& operator=(const SfLayer& _copy);
-
+  SfTileLayer& operator=(const SfTileLayer& _copy);
 
   ////////////////////////////////////////////////////////////
   /// \brief Gets the tile GID at a specific location in the
@@ -95,17 +81,17 @@ public:
   ////////////////////////////////////////////////////////////
   int GetTileGID(const int _x, const int _y);
 
-private:
+protected:
   /// Vector of the tile GIDs in the layer
   vector< vector<int> > tile_gids;
 
-
   /// Tile dimensions in pixels
   sf::Vector2i layer_dimensions;
+
 };
 
 }
 
 }
 
-#endif // SF_LAYER_H
+#endif /// SF_TILE_LAYER_H

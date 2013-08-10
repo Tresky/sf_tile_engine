@@ -31,7 +31,8 @@
 
 #include <SFML\Graphics.hpp>
 
-#include "sf_layer.h"
+#include "sf_tile_layer.h"
+#include "sf_object_layer.h"
 #include "sf_tileset.h"
 #include "sf_dll_macro.h"
 
@@ -177,8 +178,12 @@ private:
   priv::SfTileset tileset;
 
 
-  /// Vector holding all tile, image, and object layers
-  vector<priv::SfLayer> layers;
+  /// Vector holding all tile layers
+  vector<priv::SfTileLayer> tile_layers;
+
+
+  /// Vector holding all object layers
+  vector<priv::SfObjectLayer> object_layers;
 
 
   /// Dimensions of the tile map in tiles

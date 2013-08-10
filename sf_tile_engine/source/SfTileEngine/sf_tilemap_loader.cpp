@@ -5,8 +5,10 @@
 
 #include "..\..\include\SfTileEngine\sf_tilemap.h"
 #include "..\..\include\SfTileEngine\sf_tileset.h"
-#include "..\..\include\SfTileEngine\sf_layer.h"
+#include "..\..\include\SfTileEngine\sf_tile_layer.h"
 #include "..\..\include\SfTileEngine\sf_tile.h"
+#include "..\..\include\SfTileEngine\sf_object_layer.h"
+#include "..\..\include\SfTileEngine\sf_object.h"
 
 /// Engine namespace
 namespace sftile
@@ -84,22 +86,40 @@ bool SfTilemapLoader::LoadTilemap(const string _path, SfTilemap& _tilemap)
   tileset_element = nullptr;
 
   // Parse the tile layers
-  const XMLElement* layer_element = map_element->FirstChildElement("layer");
-  while (layer_element)
+  const XMLElement* tile_layer_element = map_element->FirstChildElement("layer");
+  while (tile_layer_element)
   {
-    SfLayer temp_layer;
-    if (!ParseLayer(layer_element, temp_layer))
+    SfTileLayer temp_tile_layer;
+    if (!ParseTileLayer(tile_layer_element, temp_tile_layer))
     {
       cout << "Failed to parse tile layer" << endl;
       return false;
     }
     else
     {
-      temp_map.layers.push_back(temp_layer);
+      temp_map.tile_layers.push_back(temp_tile_layer);
     }
-    layer_element = layer_element->NextSiblingElement("layer");
+    tile_layer_element = tile_layer_element->NextSiblingElement("layer");
   }
-  layer_element = nullptr;
+  tile_layer_element = nullptr;
+
+  /// Parse the tile layers (object groups)
+  const XMLElement* object_layer_element = map_element->FirstChildElement("objectgroup");
+  while (object_layer_element)
+  {
+    SfObjectLayer temp_object_layer;
+    if (!ParseObjectLayer(object_layer_element, temp_object_layer))
+    {
+      cout << "Failed to parse object layer" << endl;
+      return false;
+    }
+    else
+    {
+      temp_map.object_layers.push_back(temp_object_layer);
+    }
+    object_layer_element = object_layer_element->NextSiblingElement("objectgroup");
+  }
+  object_layer_element = nullptr;
 
   _tilemap = temp_map;
 
@@ -151,30 +171,23 @@ bool SfTilemapLoader::ParseTileset(const XMLElement* _element, SfTileset& _tiles
       _tileset.tiles.push_back(temp_tile);
     }
 
-  // Parse the properties of the tileset
-  //const XMLElement* properties_element = _element->FirstChildElement("properties");
- /* if (properties_element)
-    _tileset.properties->Parse(properties_element);*/
-
-  // Cleanup... cleanup...
-  //properties_element = nullptr;
   return true;
 }
 
 ////////////////////////////////////////////////////////////
-bool SfTilemapLoader::ParseLayer(const XMLElement* _element, SfLayer& _layer)
+bool SfTilemapLoader::ParseTileLayer(const XMLElement* _element, SfTileLayer& _tile_layer)
 {
   // Load the arbitrary name of the layer
   string name = _element->Attribute("name");
   
-  cout << "Loading Layer: " << name << endl;
+  cout << "Loading layer: " << name << endl;
 
   // Load the dimensions of the layer
   sf::Vector2i layer_dimensions(0, 0);
   _element->QueryIntAttribute("width", &layer_dimensions.x);
   _element->QueryIntAttribute("height", &layer_dimensions.y);
 
-  _layer.layer_dimensions = layer_dimensions;
+  _tile_layer.layer_dimensions = layer_dimensions;
 
   // Load the data node
   const XMLElement* data = _element->FirstChildElement("data");
@@ -183,11 +196,11 @@ bool SfTilemapLoader::ParseLayer(const XMLElement* _element, SfLayer& _layer)
   string encoding_attr = (data->Attribute("encoding") != NULL) ? data->Attribute("encoding") : "xml";
 
   // Go-go-gadget, Parsers!
-  if (encoding_attr == "xml" && !ParseXmlLayer(data, _layer))
+  if (encoding_attr == "xml" && !ParseXmlTileLayer(data, _tile_layer))
     return false;
-  else if (encoding_attr == "base64" && !ParseBase64Layer(data, _layer))
+  else if (encoding_attr == "base64" && !ParseBase64TileLayer(data, _tile_layer))
     return false;
-  else if (encoding_attr == "csv" && !ParseCsvLayer(data, _layer))
+  else if (encoding_attr == "csv" && !ParseCsvTileLayer(data, _tile_layer))
     return false;
   else
     return true;
@@ -195,14 +208,14 @@ bool SfTilemapLoader::ParseLayer(const XMLElement* _element, SfLayer& _layer)
 
 
 ////////////////////////////////////////////////////////////
-bool SfTilemapLoader::ParseXmlLayer(const XMLElement* _element, SfLayer& _layer)
+bool SfTilemapLoader::ParseXmlTileLayer(const XMLElement* _element, SfTileLayer& _tile_layer)
 {
   const XMLElement* tile = _element->FirstChildElement("tile");
 
-  for (int y = 0; y < _layer.layer_dimensions.y; ++y)
+  for (int y = 0; y < _tile_layer.layer_dimensions.y; ++y)
   {
     vector<int> temp;
-    for (int x = 0; x < _layer.layer_dimensions.x; ++x)
+    for (int x = 0; x < _tile_layer.layer_dimensions.x; ++x)
     {
       int gid = tile->IntAttribute("gid");
 
@@ -210,24 +223,139 @@ bool SfTilemapLoader::ParseXmlLayer(const XMLElement* _element, SfLayer& _layer)
 
       tile = tile->NextSiblingElement("tile");
     }
-    _layer.tile_gids.push_back(temp);
+    _tile_layer.tile_gids.push_back(temp);
   }
   // Voila! It's a boy!
   return true;
 }
 
+
 ////////////////////////////////////////////////////////////
-bool SfTilemapLoader::ParseBase64Layer(const XMLElement* _element, SfLayer& _layer)
+bool SfTilemapLoader::ParseBase64TileLayer(const XMLElement* _element, SfTileLayer& _tile_layer)
 {
   cout << "Cannot parse Base64 data" << endl;
   return false;
 }
 
+
 ////////////////////////////////////////////////////////////
-bool SfTilemapLoader::ParseCsvLayer(const XMLElement* _element, SfLayer& _layer)
+bool SfTilemapLoader::ParseCsvTileLayer(const XMLElement* _element, SfTileLayer& _tile_layer)
 {
   cout << "Cannot parse CSV data" << endl;
   return false;
+}
+
+
+////////////////////////////////////////////////////////////
+bool SfTilemapLoader::ParseObjectLayer(const tinyxml2::XMLElement* _element, SfObjectLayer& _object_layer)
+{
+  string name = _element->Attribute("name");
+  _object_layer.name = name;
+
+  cout << "Loading object layer: " << name << endl;
+
+  int width = _element->IntAttribute("width");
+  int height = _element->IntAttribute("height");
+  _object_layer.layer_dimensions = sf::Vector2i(width, height);
+
+  float opacity = _element->FloatAttribute("opacity");
+  _object_layer.opacity = opacity;
+
+  bool visible = _element->IntAttribute("visible");
+  _object_layer.visible = visible;
+
+  const XMLElement* object = _element->FirstChildElement("object");
+  while (object)
+  {
+    SfObject temp_object;
+    if (!ParseObject(object, temp_object))
+    {
+      cout << "Failed to parse object" << endl;
+      return false;
+    }
+    else
+      _object_layer.objects.push_back(temp_object);
+
+    object = object->NextSiblingElement("object");
+  }
+
+  object = nullptr;
+
+  return true;
+}
+
+
+////////////////////////////////////////////////////////////
+bool SfTilemapLoader::ParseObject(const tinyxml2::XMLElement* _element, SfObject& _object)
+{
+  string name = _element->Attribute("name");
+  _object.name = name;
+
+  string type = _element->Attribute("type");
+  _object.string_type = type;
+
+  int x = _element->IntAttribute("x");
+  int y = _element->IntAttribute("y");
+  _object.position = sf::Vector2i(x, y);
+
+  int width = _element->IntAttribute("width");
+  int height = _element->IntAttribute("height");
+  _object.dimensions = sf::Vector2i(width, height);
+
+  float rotation = _element->FloatAttribute("rotation");
+  _object.rotation = rotation;
+
+  int gid = -1; _element->QueryIntAttribute("gid", &gid);
+  _object.gid = gid;
+
+  bool visible = _element->IntAttribute("visible");
+  _object.visible = visible;
+
+  ObjectType object_type;
+  if (gid != -1)
+  {
+    object_type = SF_OBJECT_TYPE_TILE;
+    return true;
+  }
+
+  const XMLElement* child_element = _element->FirstChildElement();
+  if (child_element != nullptr)
+  {
+    string child_name = child_element->Name();
+
+    if (child_name == "ellipse")
+    {
+      object_type = SF_OBJECT_TYPE_UNKNOWN;
+      cout << "Ellipse objects unsupported" << endl;
+      return false;
+    }
+    else if (child_name == "polygon")
+    {
+      object_type = SF_OBJECT_TYPE_UNKNOWN;
+      cout << "Polygon objects unsupported" << endl;
+      return false;
+    }
+    else if (child_name == "polyline")
+    {
+      object_type = SF_OBJECT_TYPE_UNKNOWN;
+      cout << "Polyline objects unsupported" << endl;
+      return false;
+    }
+    else if (child_name == "image")
+    {
+      object_type = SF_OBJECT_TYPE_UNKNOWN;
+      cout << "Image objects unsupported" << endl;
+      return false;
+    }
+    else
+    {
+      object_type = SF_OBJECT_TYPE_UNKNOWN;
+      cout << "Unknown object type" << endl;
+      return false;
+    }
+  }
+  else
+    return false;
 }
 
 }
