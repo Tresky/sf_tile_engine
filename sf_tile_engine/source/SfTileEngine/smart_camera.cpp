@@ -1,23 +1,23 @@
-#include "..\..\include\SfTileEngine\sf_smart_camera.h"
+#include "..\..\include\SfTileEngine\smart_camera.h"
 
 namespace sftile
 {
   
 ///////////////////////////////////////////////////////////
-SfSmartCamera::SfSmartCamera(const float _width, const float _height)
-  : SfCamera(_width, _height)
+SmartCamera::SmartCamera(const float _width, const float _height)
+  : Camera(_width, _height)
   , tracking_mode(SF_TRACK_OFF)
-  , tracked_up(Key::W)
-  , tracked_down(Key::S)
-  , tracked_left(Key::A)
-  , tracked_right(Key::D)
+  , tracked_up(Key::S)
+  , tracked_down(Key::W)
+  , tracked_left(Key::D)
+  , tracked_right(Key::A)
   , tracked_button(MButton::Left)
 {}
 
 
 ///////////////////////////////////////////////////////////
-SfSmartCamera::SfSmartCamera(const SfSmartCamera& _copy)
-  : SfCamera(_copy)
+SmartCamera::SmartCamera(const SmartCamera& _copy)
+  : Camera(_copy)
   , tracking_mode(_copy.tracking_mode)
   , tracked_up(_copy.tracked_up)
   , tracked_down(_copy.tracked_down)
@@ -28,13 +28,13 @@ SfSmartCamera::SfSmartCamera(const SfSmartCamera& _copy)
 
 
 ///////////////////////////////////////////////////////////
-SfSmartCamera& SfSmartCamera::operator=(const SfSmartCamera& _copy)
+SmartCamera& SmartCamera::operator=(const SmartCamera& _copy)
 {
   if (this != &_copy)
   {
-    SfCamera::operator=(_copy);
+    Camera::operator=(_copy);
 
-    SfSmartCamera temp(_copy);
+    SmartCamera temp(_copy);
 
     std::swap(tracking_mode, temp.tracking_mode);
     std::swap(tracked_up, temp.tracked_up);
@@ -49,7 +49,7 @@ SfSmartCamera& SfSmartCamera::operator=(const SfSmartCamera& _copy)
 
 
 ///////////////////////////////////////////////////////////
-void SfSmartCamera::SetPosition(const float _x, const float _y)
+void SmartCamera::SetPosition(const float _x, const float _y)
 {
   position = sf::Vector2f(_x, _y);
   target = sf::Vector2f(_x, _y);
@@ -59,7 +59,7 @@ void SfSmartCamera::SetPosition(const float _x, const float _y)
 
 
 ///////////////////////////////////////////////////////////
-void SfSmartCamera::SetCenterPosition(const float _x, const float _y)
+void SmartCamera::SetCenterPosition(const float _x, const float _y)
 {
   float x = _x - size.x / 2.f;
   float y = _y - size.y / 2.f;
@@ -72,7 +72,7 @@ void SfSmartCamera::SetCenterPosition(const float _x, const float _y)
 
 
 ///////////////////////////////////////////////////////////
-void SfSmartCamera::MoveTo(const float _x, const float _y)
+void SmartCamera::MoveTo(const float _x, const float _y)
 {
   target = sf::Vector2f(_x, _y);
 
@@ -81,7 +81,7 @@ void SfSmartCamera::MoveTo(const float _x, const float _y)
 
 
 ///////////////////////////////////////////////////////////
-void SfSmartCamera::MoveCenterTo(const float _x, const float _y)
+void SmartCamera::MoveCenterTo(const float _x, const float _y)
 {
   float x = _x - size.x / 2.f;
   float y = _y - size.y / 2.f;
@@ -93,14 +93,14 @@ void SfSmartCamera::MoveCenterTo(const float _x, const float _y)
 
 
 ///////////////////////////////////////////////////////////
-const sf::Vector2f SfSmartCamera::GetPosition()
+const sf::Vector2f SmartCamera::GetPosition()
 {
   return position;
 }
 
 
 ///////////////////////////////////////////////////////////
-const sf::Vector2f SfSmartCamera::GetCenterPosition()
+const sf::Vector2f SmartCamera::GetCenterPosition()
 {
   sf::Vector2f center(position.x + size.x / 2.f, position.y + size.y / 2.f);
   return center;
@@ -108,7 +108,7 @@ const sf::Vector2f SfSmartCamera::GetCenterPosition()
 
 
 ///////////////////////////////////////////////////////////
-void SfSmartCamera::SetTrackMode(const SfTrackingMode _mode)
+void SmartCamera::SetTrackMode(const TrackingMode _mode)
 {
   tracking_mode = _mode;
   cout << "Tracking Mode: " << tracking_mode << endl;
@@ -116,7 +116,7 @@ void SfSmartCamera::SetTrackMode(const SfTrackingMode _mode)
 
 
 ///////////////////////////////////////////////////////////
-void SfSmartCamera::SetTrackedKeys(const Key _up, const Key _down, const Key _left, const Key _right)
+void SmartCamera::SetTrackedKeys(const Key _up, const Key _down, const Key _left, const Key _right)
 {
   tracked_up = _up;
   tracked_down = _down;
@@ -126,14 +126,14 @@ void SfSmartCamera::SetTrackedKeys(const Key _up, const Key _down, const Key _le
 
 
 ///////////////////////////////////////////////////////////
-void SfSmartCamera::SetTrackedMouseButton(MButton _button)
+void SmartCamera::SetTrackedMouseButton(MButton _button)
 {
   tracked_button = _button;
 }
 
 
 ///////////////////////////////////////////////////////////
-void SfSmartCamera::Update()
+void SmartCamera::Update()
 {
   if (tracking_mode == SF_TRACK_KEYS_PRESS)
     HandleTrackKeysPress();
@@ -147,7 +147,7 @@ void SfSmartCamera::Update()
 
 
 ///////////////////////////////////////////////////////////
-void SfSmartCamera::HandleEvents(sf::Event& _evt)
+void SmartCamera::HandleEvents(sf::Event& _evt)
 {
   if (tracking_mode == SF_TRACK_MOUSE_CLICK)
     HandleTrackMouseClick(_evt);
@@ -158,7 +158,7 @@ void SfSmartCamera::HandleEvents(sf::Event& _evt)
 
 
 ///////////////////////////////////////////////////////////
-void SfSmartCamera::CalculatePosition()
+void SmartCamera::CalculatePosition()
 {
   const float x_dist = static_cast<float>(target.x - position.x);
   const float y_dist = static_cast<float>(target.y - position.y);
@@ -191,36 +191,36 @@ void SfSmartCamera::CalculatePosition()
 
 
 ///////////////////////////////////////////////////////////
-void SfSmartCamera::HandleTrackKeysPress()
+void SmartCamera::HandleTrackKeysPress()
 {
   float x = GetPosition().x;
   float y = GetPosition().y;
 
   if (sf::Keyboard::isKeyPressed(tracked_up))
   {
-    y += 1.f;
+    y += 2.f;
     SetPosition(x, y);
   }
   if (sf::Keyboard::isKeyPressed(tracked_down))
   {
-    y -= 1.f;
+    y -= 2.f;
     SetPosition(x, y);
   }
   if (sf::Keyboard::isKeyPressed(tracked_left))
   {
-    x += 1.f;
+    x += 2.f;
     SetPosition(x, y);
   }
   if (sf::Keyboard::isKeyPressed(tracked_right))
   {
-    x -= 1.f;
+    x -= 2.f;
     SetPosition(x, y);
   }
 }
 
 
 ///////////////////////////////////////////////////////////
-void SfSmartCamera::HandleTrackMouseClick(sf::Event& _evt)
+void SmartCamera::HandleTrackMouseClick(sf::Event& _evt)
 {
   if (_evt.type == sf::Event::MouseButtonPressed && _evt.mouseButton.button == tracked_button)
   {
@@ -238,7 +238,7 @@ void SfSmartCamera::HandleTrackMouseClick(sf::Event& _evt)
 /// at the beginning of the frame.
 ///
 ///////////////////////////////////////////////////////////
-void SfSmartCamera::HandleTrackMouseClickDrag(sf::Event& _evt)
+void SmartCamera::HandleTrackMouseClickDrag(sf::Event& _evt)
 {
   if (sf::Mouse::isButtonPressed(tracked_button) && _evt.type == sf::Event::MouseMoved)
   {

@@ -1,8 +1,8 @@
-#include "..\..\include\SfTileEngine\sf_world.h"
+#include "..\..\include\SfTileEngine\world.h"
 
-#include "..\..\include\SfTileEngine\sf_tilemap.h"
-#include "..\..\include\SfTileEngine\sf_tileset.h"
-#include "..\..\include\SfTileEngine\sf_tilemap_loader.h"
+#include "..\..\include\SfTileEngine\tilemap.h"
+#include "..\..\include\SfTileEngine\tileset.h"
+#include "..\..\include\SfTileEngine\tilemap_loader.h"
 
 /// Engine namespace
 namespace sftile
@@ -10,7 +10,7 @@ namespace sftile
 
 
 ////////////////////////////////////////////////////////////
-SfWorld::SfWorld()
+World::World()
   : loader()
   , tilemaps()
   , current_id("null")
@@ -20,7 +20,7 @@ SfWorld::SfWorld()
 
 
 ////////////////////////////////////////////////////////////
-SfWorld::SfWorld(const SfWorld& _copy)
+World::World(const World& _copy)
   : loader(_copy.loader)
   , tilemaps(_copy.tilemaps)
   , current_id(_copy.current_id)
@@ -28,11 +28,11 @@ SfWorld::SfWorld(const SfWorld& _copy)
 
 
 ////////////////////////////////////////////////////////////
-SfWorld& SfWorld::operator=(const SfWorld& _copy)
+World& World::operator=(const World& _copy)
 {
   if (this != &_copy)
   {
-    SfWorld temp(_copy);
+    World temp(_copy);
 
     std::swap(loader, temp.loader);
     std::swap(tilemaps, temp.tilemaps);
@@ -49,9 +49,9 @@ SfWorld& SfWorld::operator=(const SfWorld& _copy)
 // load the new one. If the loading is successful we return
 // the loaded map, if it's not we return nullptr.
 ////////////////////////////////////////////////////////////
-SfTilemap* SfWorld::LoadTilemap(string _id, string _path)
+Tilemap* World::LoadTilemap(string _id, string _path)
 {
-  SfTilemap tilemap;
+  Tilemap tilemap;
   
   // Check to make sure the SfTilemap doesn't already exists.
   // If not, then attempt to parse the data for it.
@@ -71,7 +71,7 @@ SfTilemap* SfWorld::LoadTilemap(string _id, string _path)
 
 
 ////////////////////////////////////////////////////////////
-SfTilemap* SfWorld::GetTilemap(string _id)
+Tilemap* World::GetTilemap(string _id)
 {
   // Check for existence of the SfTilemap
   if (tilemaps.find(_id) == tilemaps.end())
@@ -85,28 +85,28 @@ SfTilemap* SfWorld::GetTilemap(string _id)
 
 
 ////////////////////////////////////////////////////////////
-void SfWorld::HandleEvents(sf::Event _evt)
+void World::HandleEvents(sf::Event _evt)
 {
   GetTilemap(current_id)->HandleEvents(_evt);
 }
 
 
 ////////////////////////////////////////////////////////////
-void SfWorld::Update()
+void World::Update()
 {
   GetTilemap(current_id)->Update();
 }
 
 
 ////////////////////////////////////////////////////////////
-void SfWorld::Render(sf::RenderWindow& _window)
+void World::Render(sf::RenderWindow& _window)
 {
   GetTilemap(current_id)->Render(_window);
 }
 
 
 ////////////////////////////////////////////////////////////
-bool SfWorld::MapExists(string _id)
+bool World::MapExists(string _id)
 {
   if (tilemaps.find(_id) == tilemaps.end())
     return false;

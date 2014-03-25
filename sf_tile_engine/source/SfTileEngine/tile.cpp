@@ -1,4 +1,4 @@
-#include "..\..\include\SfTileEngine\sf_tile.h"
+#include "..\..\include\SfTileEngine\tile.h"
 
 /// Engine namespace
 namespace sftile
@@ -9,25 +9,25 @@ namespace priv
 {
 
 ////////////////////////////////////////////////////////////
-SfTile::SfTile(int _gid, sf::IntRect _rect)
+Tile::Tile(int _gid, sf::IntRect _rect)
   : gid(_gid)
   , rect(_rect)
 {}
 
 
 ////////////////////////////////////////////////////////////
-SfTile::SfTile(const SfTile& _copy)
+Tile::Tile(const Tile& _copy)
   : gid(_copy.gid)
   , rect(_copy.rect)
 {}
 
 
 ////////////////////////////////////////////////////////////
-SfTile& SfTile::operator=(const SfTile& _copy)
+Tile& Tile::operator=(const Tile& _copy)
 {
   if (this != &_copy)
   {
-    SfTile temp(_copy);
+    Tile temp(_copy);
 
     std::swap(gid, temp.gid);
     std::swap(rect, temp.rect);
@@ -38,7 +38,7 @@ SfTile& SfTile::operator=(const SfTile& _copy)
 
 
 ////////////////////////////////////////////////////////////
-sf::IntRect SfTile::GetRect()
+sf::IntRect Tile::GetRect()
 {
   return rect;
 }

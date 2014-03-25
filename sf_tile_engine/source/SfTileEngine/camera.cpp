@@ -1,11 +1,11 @@
-#include "..\..\include\SfTileEngine\sf_camera.h"
+#include "..\..\include\SfTileEngine\camera.h"
 
 /// Library namespace
 namespace sftile
 {
 
 ///////////////////////////////////////////////////////////
-SfCamera::SfCamera(const float _width, const float _height)
+Camera::Camera(const float _width, const float _height)
   : position(0.f, 0.f)
   , target(0.f, 0.f)
   , size(_width, _height)
@@ -15,7 +15,7 @@ SfCamera::SfCamera(const float _width, const float _height)
 
 
 ///////////////////////////////////////////////////////////
-SfCamera::SfCamera(const SfCamera& _copy)
+Camera::Camera(const Camera& _copy)
   : position(_copy.position)
   , target(_copy.target)
   , size(_copy.size)
@@ -25,7 +25,7 @@ SfCamera::SfCamera(const SfCamera& _copy)
 
 
 ///////////////////////////////////////////////////////////
-SfCamera& SfCamera::operator=(const SfCamera& _copy)
+Camera& Camera::operator=(const Camera& _copy)
 {
   if (this != &_copy)
   {
@@ -41,7 +41,7 @@ SfCamera& SfCamera::operator=(const SfCamera& _copy)
 
 
 ///////////////////////////////////////////////////////////
-const sf::Vector2i SfCamera::GetTileOffset(const int _tile_width, const int _tile_height)
+const sf::Vector2i Camera::GetTileOffset(const int _tile_width, const int _tile_height)
 {
   sf::Vector2i temp;
   temp.x = static_cast<int>(position.x) % _tile_width;
@@ -51,7 +51,7 @@ const sf::Vector2i SfCamera::GetTileOffset(const int _tile_width, const int _til
 
 
 ///////////////////////////////////////////////////////////
-const sf::IntRect SfCamera::GetBounds(const int _tile_width, const int _tile_height)
+const sf::IntRect Camera::GetBounds(const int _tile_width, const int _tile_height)
 {
   int tile_x = 0;
   int tile_y = 0;

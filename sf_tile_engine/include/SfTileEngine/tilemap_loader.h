@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////
 /// SfTileEngine: C++/SFML Tile Engine
-/// Copyright (C) 2013 Tyler Petresky
+/// Copyright (C) 2014 Tyler Petresky
 ///
 /// This program is free software: you can redistribute it and/or modify
 /// it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@
 
 #include <SFML\Graphics.hpp>
 
-#include "sf_dll_macro.h"
+#include "dll_macro.h"
 
 /// TinyXML namespace
 namespace tinyxml2
@@ -40,29 +40,29 @@ namespace tinyxml2
 /// Engine namespace
 namespace sftile
 {
-class SfTilemap;
-class SfObject;
+class Tilemap;
+class Object;
 
 /// Private engine namespace
 namespace priv
 {
-class SfTileset;
-class SfTileLayer;
-class SfObjectLayer;
+class Tileset;
+class TileLayer;
+class ObjectLayer;
 
 ////////////////////////////////////////////////////////////
-/// \class: SfTilemapLoader
+/// \class: TilemapLoader
 /// \brief Class for loading and saving tile maps.
 ///
 /// This is a private class used to load all tile maps
 /// into the engine. This loader class is a friend to the
-/// SfTilemap, SfTileset, SfTileLayer, and SfProperties classes.
+/// Tilemap, Tileset, TileLayer, and Properties classes.
 /// This allows the class to piece together a tile map bit
 /// by bit.
 ///
 ////////////////////////////////////////////////////////////
 
-class SF_TILE_API SfTilemapLoader
+class SF_TILE_API TilemapLoader
 {
 public:
   ////////////////////////////////////////////////////////////
@@ -78,7 +78,7 @@ public:
   /// \return True if successful
   ///
   ////////////////////////////////////////////////////////////
-  bool LoadTilemap(const string _path, SfTilemap& _tilemap);
+  bool LoadTilemap(const string _path, Tilemap& _tilemap);
 
 private:
   ////////////////////////////////////////////////////////////
@@ -93,7 +93,7 @@ private:
   /// \return True if successful
   ///
   ////////////////////////////////////////////////////////////
-  bool ParseTileset(const tinyxml2::XMLElement* _element, SfTileset& _tileset);
+  bool ParseTileset(const tinyxml2::XMLElement* _element, Tileset& _tileset);
 
 
   ////////////////////////////////////////////////////////////
@@ -107,7 +107,7 @@ private:
   /// \return True if successful
   ///
   ////////////////////////////////////////////////////////////
-  bool ParseTileLayer(const tinyxml2::XMLElement* _element, SfTileLayer& _tile_layer);
+  bool ParseTileLayer(const tinyxml2::XMLElement* _element, TileLayer& _tile_layer);
 
 
   ////////////////////////////////////////////////////////////
@@ -116,7 +116,7 @@ private:
   ///
   ///
   ////////////////////////////////////////////////////////////
-  bool ParseXmlTileLayer(const tinyxml2::XMLElement* _element, SfTileLayer& _tile_layer);
+  bool ParseXmlTileLayer(const tinyxml2::XMLElement* _element, TileLayer& _tile_layer);
 
 
   ////////////////////////////////////////////////////////////
@@ -125,7 +125,7 @@ private:
   ///
   ///
   ////////////////////////////////////////////////////////////
-  bool ParseBase64TileLayer(const tinyxml2::XMLElement* _element, SfTileLayer& _tile_layer);
+  bool ParseBase64TileLayer(const tinyxml2::XMLElement* _element, TileLayer& _tile_layer);
 
 
   ////////////////////////////////////////////////////////////
@@ -134,7 +134,7 @@ private:
   ///
   ///
   ////////////////////////////////////////////////////////////
-  bool ParseCsvTileLayer(const tinyxml2::XMLElement* _element, SfTileLayer& _tile_layer);
+  bool ParseCsvTileLayer(const tinyxml2::XMLElement* _element, TileLayer& _tile_layer);
 
 
   ////////////////////////////////////////////////////////////
@@ -145,7 +145,7 @@ private:
   /// \return True if successful
   ///
   ////////////////////////////////////////////////////////////
-  bool ParseObjectLayer(const tinyxml2::XMLElement* _element, SfObjectLayer& _object_layer);
+  bool ParseObjectLayer(const tinyxml2::XMLElement* _element, ObjectLayer& _object_layer);
 
 
   ////////////////////////////////////////////////////////////
@@ -156,7 +156,7 @@ private:
   /// \return True if successful
   ///
   ////////////////////////////////////////////////////////////
-  bool ParseObject(const tinyxml2::XMLElement* _element, SfObject& _object);
+  bool ParseObject(const tinyxml2::XMLElement* _element, Object& _object);
 
 };
 

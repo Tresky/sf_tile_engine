@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////
 /// SfTileEngine: C++/SFML Tile Engine
-/// Copyright (C) 2013 Tyler Petresky
+/// Copyright (C) 2014 Tyler Petresky
 ///
 /// This program is free software: you can redistribute it and/or modify
 /// it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@
 /// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ////////////////////////////////////////////////////////////
 
-#include "..\..\include\SfTileEngine\sf_object_layer.h"
+#include "..\..\include\SfTileEngine\object_layer.h"
 
 /// Library namespace
 namespace sftile
@@ -27,25 +27,25 @@ namespace priv
 {
 
 ////////////////////////////////////////////////////////////
-SfObjectLayer::SfObjectLayer()
+ObjectLayer::ObjectLayer()
   : objects()
   , layer_dimensions(-1, -1)
 {}
 
 
 ////////////////////////////////////////////////////////////
-SfObjectLayer::SfObjectLayer(const SfObjectLayer& _copy)
+ObjectLayer::ObjectLayer(const ObjectLayer& _copy)
   : objects(_copy.objects)
   , layer_dimensions(_copy.layer_dimensions)
 {}
 
 
 ////////////////////////////////////////////////////////////
-SfObjectLayer& SfObjectLayer::operator=(const SfObjectLayer& _copy)
+ObjectLayer& ObjectLayer::operator=(const ObjectLayer& _copy)
 {
   if (this != &_copy)
   {
-    SfObjectLayer temp(_copy);
+    ObjectLayer temp(_copy);
 
     std::swap(objects, temp.objects);
     std::swap(layer_dimensions, temp.layer_dimensions);
@@ -56,7 +56,7 @@ SfObjectLayer& SfObjectLayer::operator=(const SfObjectLayer& _copy)
 
 
 ////////////////////////////////////////////////////////////
-SfObject* SfObjectLayer::GetObject(unsigned int _index)
+Object* ObjectLayer::GetObject(unsigned int _index)
 {
   return &objects.at(_index);
 }

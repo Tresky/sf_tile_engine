@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////
 /// SfTileEngine: C++/SFML Tile Engine
-/// Copyright (C) 2013 Tyler Petresky
+/// Copyright (C) 2014 Tyler Petresky
 ///
 /// This program is free software: you can redistribute it and/or modify
 /// it under the terms of the GNU General Public License as published by
@@ -31,8 +31,9 @@
 
 #include <SFML\Graphics.hpp>
 
-#include "sf_tilemap_loader.h"
-#include "sf_dll_macro.h"
+#include "tilemap.h"
+#include "tilemap_loader.h"
+#include "dll_macro.h"
 
 /// Engine namespace
 namespace sftile
@@ -40,7 +41,7 @@ namespace sftile
 class SfTilemap;
 
 ////////////////////////////////////////////////////////////
-/// \class SfWorld
+/// \class World
 /// \brief Provides a class to load and interact with
 ///        your tilemaps.
 ///
@@ -63,11 +64,11 @@ class SfTilemap;
 /// Proper Usage
 /// \code
 /// // Create SfWorld object
-/// SfWorld world;
+/// World world;
 ///
 /// // Load a tilemap and save it in the world.
 /// // This also saves a pointer to that tilemap.
-/// SfTilemap* tilemap = world.LoadTilemap("testmap", "res\\maps\\test_map.tmx");
+/// Tilemap* tilemap = world.LoadTilemap("testmap", "res\\maps\\test_map.tmx");
 /// if (!tilemap)
 /// {
 ///   cout << "Failed to load tilemap" << endl;
@@ -95,7 +96,7 @@ class SfTilemap;
 /// \endcode
 ////////////////////////////////////////////////////////////
 
-class SF_TILE_API SfWorld
+class SF_TILE_API World
 {
 public:
 	////////////////////////////////////////////////////////////
@@ -104,7 +105,7 @@ public:
   /// Creates an empty world object.
   ///
   ////////////////////////////////////////////////////////////
-  explicit SfWorld();
+  explicit World();
 
 
   ////////////////////////////////////////////////////////////
@@ -113,7 +114,7 @@ public:
   /// Copies an existing world object.
   ///
   ////////////////////////////////////////////////////////////
-  SfWorld(const SfWorld& _copy);
+  World(const World& _copy);
 
 
   ////////////////////////////////////////////////////////////
@@ -122,7 +123,7 @@ public:
   /// Copies an existing world object.
   ///
   ////////////////////////////////////////////////////////////
-  SfWorld& operator=(const SfWorld& _copy);
+  World& operator=(const World& _copy);
 
 
   ////////////////////////////////////////////////////////////
@@ -140,7 +141,7 @@ public:
   /// \return Pointer to the loaded tile map if successful
   ///
   ////////////////////////////////////////////////////////////
-  SfTilemap* LoadTilemap(string _id, string _path);
+  Tilemap* LoadTilemap(string _id, string _path);
 
 
   ////////////////////////////////////////////////////////////
@@ -151,7 +152,7 @@ public:
   /// \return Pointer to the tile map if successful
   ///
   ////////////////////////////////////////////////////////////
-  SfTilemap* GetTilemap(string _id);
+  Tilemap* GetTilemap(string _id);
 
 
   ////////////////////////////////////////////////////////////
@@ -205,11 +206,11 @@ private:
 
 
   /// Takes care of loading the tile maps
-  priv::SfTilemapLoader loader;
+  priv::TilemapLoader loader;
 
 
   /// Tile maps
-  map<string, SfTilemap> tilemaps;
+  map<string, Tilemap> tilemaps;
 
 
   /// String ID of currently visible tile map

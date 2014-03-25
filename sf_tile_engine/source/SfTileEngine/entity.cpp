@@ -1,0 +1,32 @@
+#include "..\..\include\SfTileEngine\entity.h"
+
+/// Library namespace
+namespace sftile
+{
+
+////////////////////////////////////////////////////////////
+Entity::Entity()
+{}
+
+
+////////////////////////////////////////////////////////////
+Entity::Entity(const Entity& _copy)
+{}
+
+
+////////////////////////////////////////////////////////////
+Entity& Entity::operator=(const Entity& _copy)
+{
+	if (this != &_copy)
+	{
+		Entity temp(_copy);
+	}
+	return *this;
+}
+
+
+////////////////////////////////////////////////////////////
+void Render(sf::RenderWindow& _window)
+{}
+
+}

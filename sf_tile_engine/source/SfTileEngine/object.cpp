@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////
 /// SfTileEngine: C++/SFML Tile Engine
-/// Copyright (C) 2013 Tyler Petresky
+/// Copyright (C) 2014 Tyler Petresky
 ///
 /// This program is free software: you can redistribute it and/or modify
 /// it under the terms of the GNU General Public License as published by
@@ -16,13 +16,13 @@
 /// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ////////////////////////////////////////////////////////////
 
-#include "..\..\include\SfTileEngine\sf_object.h"
+#include "..\..\include\SfTileEngine\object.h"
 
 namespace sftile
 {
 
 ////////////////////////////////////////////////////////////
-SfObject::SfObject()
+Object::Object()
   : object_type(SF_OBJECT_TYPE_UNKNOWN)
   , name("")
   , string_type("")
@@ -35,7 +35,7 @@ SfObject::SfObject()
 
 
 ////////////////////////////////////////////////////////////
-SfObject::SfObject(const SfObject& _copy)
+Object::Object(const Object& _copy)
   : object_type(_copy.object_type)
   , name(_copy.name)
   , string_type(_copy.string_type)
@@ -48,11 +48,11 @@ SfObject::SfObject(const SfObject& _copy)
 
 
 ////////////////////////////////////////////////////////////
-SfObject& SfObject::operator=(const SfObject& _copy)
+Object& Object::operator=(const Object& _copy)
 {
   if (this != &_copy)
   {
-    SfObject temp(_copy);
+    Object temp(_copy);
 
     std::swap(object_type, temp.object_type);
     std::swap(name, temp.name);
@@ -69,49 +69,49 @@ SfObject& SfObject::operator=(const SfObject& _copy)
 
 
 ////////////////////////////////////////////////////////////
-string SfObject::GetName()
+string Object::GetName()
 {
   return name;
 }
 
 
 ////////////////////////////////////////////////////////////
-string SfObject::GetStringType()
+string Object::GetStringType()
 {
   return string_type;
 }
 
 
 ////////////////////////////////////////////////////////////
-sf::Vector2i SfObject::GetPosition()
+sf::Vector2i Object::GetPosition()
 {
   return position;
 }
 
 
 ////////////////////////////////////////////////////////////
-sf::Vector2i SfObject::GetDimensions()
+sf::Vector2i Object::GetDimensions()
 {
   return dimensions;
 }
 
 
 ////////////////////////////////////////////////////////////
-float SfObject::GetRotation()
+float Object::GetRotation()
 {
   return rotation;
 }
 
 
 ////////////////////////////////////////////////////////////
-int SfObject::GetGid()
+int Object::GetGid()
 {
   return gid;
 }
 
 
 ////////////////////////////////////////////////////////////
-bool SfObject::IsVisible()
+bool Object::IsVisible()
 {
   return visible;
 }

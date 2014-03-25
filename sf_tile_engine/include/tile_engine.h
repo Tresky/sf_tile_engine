@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////
 /// SfTileEngine: C++/SFML Tile Engine
-/// Copyright (C) 2013 Tyler Petresky
+/// Copyright (C) 2014 Tyler Petresky
 ///
 /// This program is free software: you can redistribute it and/or modify
 /// it under the terms of the GNU General Public License as published by
@@ -25,9 +25,9 @@
 
 /// Enjoy the engine and may Akatosh watch over your code. ;)
 
-#include "SfTileEngine\sf_world.h"
-#include "SfTileEngine\sf_tilemap.h"
-#include "SfTileEngine\sf_smart_camera.h"
+#include "SfTileEngine\world.h"
+#include "SfTileEngine\tilemap.h"
+#include "SfTileEngine\smart_camera.h"
 
 /// Please be sure to report any bugs or discrepencies to me. You can report
 /// them in various methods:

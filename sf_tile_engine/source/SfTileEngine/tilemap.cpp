@@ -1,15 +1,15 @@
-#include "..\..\include\SfTileEngine\sf_tilemap.h"
+#include "..\..\include\SfTileEngine\tilemap.h"
 
 #include "..\..\extlibs\TinyXML\tinyxml2.h"
   using namespace tinyxml2;
 
-#include "..\..\include\SfTileEngine\sf_camera.h"
+#include "..\..\include\SfTileEngine\camera.h"
 
 namespace sftile
 {
 
 ////////////////////////////////////////////////////////////
-SfTilemap::SfTilemap()
+Tilemap::Tilemap()
   : camera(nullptr)
   , tileset()
   , tile_layers()
@@ -21,7 +21,7 @@ SfTilemap::SfTilemap()
 
 
 ////////////////////////////////////////////////////////////
-SfTilemap::SfTilemap(const SfTilemap& _copy)
+Tilemap::Tilemap(const Tilemap& _copy)
   : camera(_copy.camera)
   , tileset(_copy.tileset)
   , tile_layers(_copy.tile_layers)
@@ -33,11 +33,11 @@ SfTilemap::SfTilemap(const SfTilemap& _copy)
 
 
 ////////////////////////////////////////////////////////////
-SfTilemap& SfTilemap::operator=(const SfTilemap& _copy)
+Tilemap& Tilemap::operator=(const Tilemap& _copy)
 {
   if (this != &_copy)
   {
-    SfTilemap temp(_copy);
+    Tilemap temp(_copy);
 
     std::swap(camera, temp.camera);
     std::swap(tileset, temp.tileset);
@@ -52,35 +52,35 @@ SfTilemap& SfTilemap::operator=(const SfTilemap& _copy)
 
 
 ////////////////////////////////////////////////////////////
-SfTilemap::~SfTilemap()
+Tilemap::~Tilemap()
 {
   camera = nullptr;
 }
 
 
 ////////////////////////////////////////////////////////////
-void SfTilemap::RegisterCamera(SfCamera* _camera)
+void Tilemap::RegisterCamera(Camera* _camera)
 {
   camera = _camera;
 }
 
 
 ////////////////////////////////////////////////////////////
-void SfTilemap::HandleEvents(sf::Event _evt)
+void Tilemap::HandleEvents(sf::Event _evt)
 {
   camera->HandleEvents(_evt);
 }
 
 
 ////////////////////////////////////////////////////////////
-void SfTilemap::Update()
+void Tilemap::Update()
 {
   camera->Update();
 }
 
 
 ////////////////////////////////////////////////////////////
-void SfTilemap::Render(sf::RenderWindow& _window)
+void Tilemap::Render(sf::RenderWindow& _window)
 {
   sf::Vector2i offset = camera->GetTileOffset(tile_dimensions.x, tile_dimensions.y);
   sf::IntRect bounds = camera->GetBounds(tile_dimensions.x, tile_dimensions.y);

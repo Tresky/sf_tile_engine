@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////
 /// SfTileEngine: C++/SFML Tile Engine
-/// Copyright (C) 2013 Tyler Petresky
+/// Copyright (C) 2014 Tyler Petresky
 ///
 /// This program is free software: you can redistribute it and/or modify
 /// it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@
 
 #include <SFML\Graphics.hpp>
 
-#include "sf_dll_macro.h"
+#include "dll_macro.h"
 
 /// Library namespace
 namespace sftile
@@ -33,7 +33,7 @@ namespace sftile
 
 
 ////////////////////////////////////////////////////////////
-/// \class SfCamera
+/// \class Camera
 /// \brief Handles displaying a portion of the tile map.
 ///
 /// This class serves a few purposes. 
@@ -42,7 +42,7 @@ namespace sftile
 ///
 ///
 ////////////////////////////////////////////////////////////
-class SF_TILE_API SfCamera
+class SF_TILE_API Camera
 {
 public:
   ////////////////////////////////////////////////////////////
@@ -52,7 +52,7 @@ public:
   /// dimensions of the current window are typically used.
   ///
   ////////////////////////////////////////////////////////////
-  explicit SfCamera(const float _width, const float _height);
+  explicit Camera(const float _width, const float _height);
 
 
   ////////////////////////////////////////////////////////////
@@ -61,7 +61,7 @@ public:
   /// Copies an existing camera.
   ///
   ////////////////////////////////////////////////////////////
-  explicit SfCamera(const SfCamera& _copy);
+  explicit Camera(const Camera& _copy);
 
 
   ////////////////////////////////////////////////////////////
@@ -70,7 +70,7 @@ public:
   /// Copies an existing camera.
   ///
   ////////////////////////////////////////////////////////////
-  SfCamera& operator=(const SfCamera& _copy);
+  Camera& operator=(const Camera& _copy);
 
 
   ////////////////////////////////////////////////////////////
@@ -199,7 +199,7 @@ private:
   /// will remain private.
   ///
   ///////////////////////////////////////////////////////////
-  explicit SfCamera() {}
+  explicit Camera() {}
 };
 
 }

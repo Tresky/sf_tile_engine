@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////
 /// SfTileEngine: C++/SFML Tile Engine
-/// Copyright (C) 2013 Tyler Petresky
+/// Copyright (C) 2014 Tyler Petresky
 ///
 /// This program is free software: you can redistribute it and/or modify
 /// it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@
 
 #include <SFML\Graphics.hpp>
 
-#include "sf_dll_macro.h"
+#include "dll_macro.h"
 
 /// Engine namespace
 namespace sftile
@@ -36,7 +36,7 @@ namespace priv
 {
 
 ////////////////////////////////////////////////////////////
-/// \class SfTile
+/// \class Tile
 /// \brief Standard tile class
 ///
 /// This class stores tile data as a GID and an sf::Rect.
@@ -47,7 +47,7 @@ namespace priv
 ///
 ////////////////////////////////////////////////////////////
 
-class SF_TILE_API SfTile
+class SF_TILE_API Tile
 {
 public:
   ////////////////////////////////////////////////////////////
@@ -56,7 +56,7 @@ public:
   /// Constructs a tile.
   ///
   ////////////////////////////////////////////////////////////
-  explicit SfTile(int _gid, sf::IntRect _rect);
+  explicit Tile(int _gid, sf::IntRect _rect);
 
 
   ////////////////////////////////////////////////////////////
@@ -65,7 +65,7 @@ public:
   /// Copies an existing tile.
   ///
   ////////////////////////////////////////////////////////////
-  SfTile(const SfTile& _copy);
+  Tile(const Tile& _copy);
 
 
   ////////////////////////////////////////////////////////////
@@ -74,7 +74,7 @@ public:
   /// Copies an existing tile.
   ///
   ////////////////////////////////////////////////////////////
-  SfTile& operator=(const SfTile& _copy);
+  Tile& operator=(const Tile& _copy);
 
 
   ////////////////////////////////////////////////////////////

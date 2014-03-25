@@ -5,8 +5,8 @@
   using std::cout;
   using std::endl;
 
-#include "sf_camera.h"
-#include "sf_dll_macro.h"
+#include "camera.h"
+#include "dll_macro.h"
 
 /// Library namespace
 namespace sftile
@@ -18,7 +18,7 @@ typedef sf::Mouse::Button MButton;
 
 /// Represents the tracking mode that the smart camera
 /// is currently in.
-enum SfTrackingMode
+enum TrackingMode
 {
   SF_TRACK_OFF = 0, // Supported
   SF_TRACK_KEYS_PRESS, // Supported
@@ -27,7 +27,7 @@ enum SfTrackingMode
 };
   
 ///////////////////////////////////////////////////////////
-/// \class SfSmartCamera
+/// \class SmartCamera
 /// \brief A pre-made camera that comes packed with useful
 ///        features that are ready-to-use out of the box.
 ///
@@ -35,7 +35,7 @@ enum SfTrackingMode
 /// SfCamera.
 ///
 ///////////////////////////////////////////////////////////
-class SF_TILE_API SfSmartCamera : public SfCamera
+class SF_TILE_API SmartCamera : public Camera
 {
 public:
   ////////////////////////////////////////////////////////////
@@ -45,7 +45,7 @@ public:
   /// dimensions of the current window are typically used.
   ///
   ////////////////////////////////////////////////////////////
-  explicit SfSmartCamera(const float _width, const float _height);
+  explicit SmartCamera(const float _width, const float _height);
 
 
   ////////////////////////////////////////////////////////////
@@ -54,7 +54,7 @@ public:
   /// Copies an existing smart camera.
   ///
   ////////////////////////////////////////////////////////////
-  explicit SfSmartCamera(const SfSmartCamera& _copy);
+  explicit SmartCamera(const SmartCamera& _copy);
 
 
   ////////////////////////////////////////////////////////////
@@ -63,7 +63,7 @@ public:
   /// Copies an existing camera.
   ///
   ////////////////////////////////////////////////////////////
-  SfSmartCamera& operator=(const SfSmartCamera& _copy);
+  SmartCamera& operator=(const SmartCamera& _copy);
   
 
   ////////////////////////////////////////////////////////////
@@ -140,7 +140,7 @@ public:
   ///
   ///
   ///////////////////////////////////////////////////////////
-  void SetTrackMode(const SfTrackingMode _mode);
+  void SetTrackMode(const TrackingMode _mode);
 
 
   ///////////////////////////////////////////////////////////
@@ -234,7 +234,7 @@ private:
   void HandleTrackObject();
 
   /// Tracking mode of the smart camera
-  SfTrackingMode tracking_mode;
+  TrackingMode tracking_mode;
 
   /// Tracked keys for use in the SF_TRACK_KEYS_PRESS mode
   Key tracked_up, tracked_down, tracked_left, tracked_right;

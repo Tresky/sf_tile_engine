@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////
 /// SfTileEngine: C++/SFML Tile Engine
-/// Copyright (C) 2013 Tyler Petresky
+/// Copyright (C) 2014 Tyler Petresky
 ///
 /// This program is free software: you can redistribute it and/or modify
 /// it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@
 
 #include <SFML\Graphics.hpp>
 
-#include "sf_dll_macro.h"
+#include "dll_macro.h"
 
 /// Engine namespace
 namespace sftile
@@ -46,12 +46,12 @@ enum ObjectType
 /// Private engine namespace
 namespace priv
 {
-class SfTilemapLoader;
+class TilemapLoader;
 }
 
-class SF_TILE_API SfObject
+class SF_TILE_API Object
 {
-friend class priv::SfTilemapLoader;
+friend class priv::TilemapLoader;
 public:
   ////////////////////////////////////////////////////////////
   /// \brief Default constructor
@@ -59,7 +59,7 @@ public:
   /// Creates an empty object.
   ///
   ////////////////////////////////////////////////////////////
-  explicit SfObject();
+  explicit Object();
 
 
   ////////////////////////////////////////////////////////////
@@ -68,7 +68,7 @@ public:
   /// Copies an existing object.
   ///
   ////////////////////////////////////////////////////////////
-  SfObject(const SfObject& _copy);
+  Object(const Object& _copy);
 
 
   ////////////////////////////////////////////////////////////
@@ -77,7 +77,7 @@ public:
   /// Copies an existing object.
   ///
   ////////////////////////////////////////////////////////////
-  SfObject& operator=(const SfObject& _copy);
+  Object& operator=(const Object& _copy);
 
 
   ////////////////////////////////////////////////////////////

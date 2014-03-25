@@ -1,14 +1,14 @@
-#include "..\..\include\SfTileEngine\sf_tilemap_loader.h"
+#include "..\..\include\SfTileEngine\tilemap_loader.h"
 
 #include "..\..\extlibs\TinyXML\tinyxml2.h"
   using namespace tinyxml2;
 
-#include "..\..\include\SfTileEngine\sf_tilemap.h"
-#include "..\..\include\SfTileEngine\sf_tileset.h"
-#include "..\..\include\SfTileEngine\sf_tile_layer.h"
-#include "..\..\include\SfTileEngine\sf_tile.h"
-#include "..\..\include\SfTileEngine\sf_object_layer.h"
-#include "..\..\include\SfTileEngine\sf_object.h"
+#include "..\..\include\SfTileEngine\tilemap.h"
+#include "..\..\include\SfTileEngine\tileset.h"
+#include "..\..\include\SfTileEngine\tile_layer.h"
+#include "..\..\include\SfTileEngine\tile.h"
+#include "..\..\include\SfTileEngine\object_layer.h"
+#include "..\..\include\SfTileEngine\object.h"
 
 /// Engine namespace
 namespace sftile
@@ -31,10 +31,10 @@ bool CheckPointer(const void* _ptr, string _error)
 
 
 ////////////////////////////////////////////////////////////
-bool SfTilemapLoader::LoadTilemap(const string _path, SfTilemap& _tilemap)
+bool TilemapLoader::LoadTilemap(const string _path, Tilemap& _tilemap)
 {
   // Temporary map object
-  SfTilemap temp_map;
+  Tilemap temp_map;
 
   // Load TMX file in TinyXML
   XMLDocument doc;
@@ -89,7 +89,7 @@ bool SfTilemapLoader::LoadTilemap(const string _path, SfTilemap& _tilemap)
   const XMLElement* tile_layer_element = map_element->FirstChildElement("layer");
   while (tile_layer_element)
   {
-    SfTileLayer temp_tile_layer;
+    TileLayer temp_tile_layer;
     if (!ParseTileLayer(tile_layer_element, temp_tile_layer))
     {
       cout << "Failed to parse tile layer" << endl;
@@ -107,7 +107,7 @@ bool SfTilemapLoader::LoadTilemap(const string _path, SfTilemap& _tilemap)
   const XMLElement* object_layer_element = map_element->FirstChildElement("objectgroup");
   while (object_layer_element)
   {
-    SfObjectLayer temp_object_layer;
+    ObjectLayer temp_object_layer;
     if (!ParseObjectLayer(object_layer_element, temp_object_layer))
     {
       cout << "Failed to parse object layer" << endl;
@@ -127,7 +127,7 @@ bool SfTilemapLoader::LoadTilemap(const string _path, SfTilemap& _tilemap)
 }
 
 ////////////////////////////////////////////////////////////
-bool SfTilemapLoader::ParseTileset(const XMLElement* _element, SfTileset& _tileset)
+bool TilemapLoader::ParseTileset(const XMLElement* _element, Tileset& _tileset)
 {
   // First GID of the currently parsing tileset
   int first_gid = 0; _element->QueryIntAttribute("firstgid", &first_gid);
@@ -167,7 +167,7 @@ bool SfTilemapLoader::ParseTileset(const XMLElement* _element, SfTileset& _tiles
       // to display the tile.
       sf::IntRect rect(x, y, _tileset.tile_dimensions.x, _tileset.tile_dimensions.y);
 
-      SfTile temp_tile(gid, rect);
+      Tile temp_tile(gid, rect);
       _tileset.tiles.push_back(temp_tile);
     }
 
@@ -175,7 +175,7 @@ bool SfTilemapLoader::ParseTileset(const XMLElement* _element, SfTileset& _tiles
 }
 
 ////////////////////////////////////////////////////////////
-bool SfTilemapLoader::ParseTileLayer(const XMLElement* _element, SfTileLayer& _tile_layer)
+bool TilemapLoader::ParseTileLayer(const XMLElement* _element, TileLayer& _tile_layer)
 {
   // Load the arbitrary name of the layer
   string name = _element->Attribute("name");
@@ -208,7 +208,7 @@ bool SfTilemapLoader::ParseTileLayer(const XMLElement* _element, SfTileLayer& _t
 
 
 ////////////////////////////////////////////////////////////
-bool SfTilemapLoader::ParseXmlTileLayer(const XMLElement* _element, SfTileLayer& _tile_layer)
+bool TilemapLoader::ParseXmlTileLayer(const XMLElement* _element, TileLayer& _tile_layer)
 {
   const XMLElement* tile = _element->FirstChildElement("tile");
 
@@ -231,7 +231,7 @@ bool SfTilemapLoader::ParseXmlTileLayer(const XMLElement* _element, SfTileLayer&
 
 
 ////////////////////////////////////////////////////////////
-bool SfTilemapLoader::ParseBase64TileLayer(const XMLElement* _element, SfTileLayer& _tile_layer)
+bool TilemapLoader::ParseBase64TileLayer(const XMLElement* _element, TileLayer& _tile_layer)
 {
   cout << "Cannot parse Base64 data" << endl;
   return false;
@@ -239,7 +239,7 @@ bool SfTilemapLoader::ParseBase64TileLayer(const XMLElement* _element, SfTileLay
 
 
 ////////////////////////////////////////////////////////////
-bool SfTilemapLoader::ParseCsvTileLayer(const XMLElement* _element, SfTileLayer& _tile_layer)
+bool TilemapLoader::ParseCsvTileLayer(const XMLElement* _element, TileLayer& _tile_layer)
 {
   cout << "Cannot parse CSV data" << endl;
   return false;
@@ -247,7 +247,7 @@ bool SfTilemapLoader::ParseCsvTileLayer(const XMLElement* _element, SfTileLayer&
 
 
 ////////////////////////////////////////////////////////////
-bool SfTilemapLoader::ParseObjectLayer(const tinyxml2::XMLElement* _element, SfObjectLayer& _object_layer)
+bool TilemapLoader::ParseObjectLayer(const tinyxml2::XMLElement* _element, ObjectLayer& _object_layer)
 {
   string name = _element->Attribute("name");
   _object_layer.name = name;
@@ -261,13 +261,13 @@ bool SfTilemapLoader::ParseObjectLayer(const tinyxml2::XMLElement* _element, SfO
   float opacity = _element->FloatAttribute("opacity");
   _object_layer.opacity = opacity;
 
-  bool visible = _element->IntAttribute("visible");
+  bool visible = static_cast<bool>(_element->IntAttribute("visible"));
   _object_layer.visible = visible;
 
   const XMLElement* object = _element->FirstChildElement("object");
   while (object)
   {
-    SfObject temp_object;
+    Object temp_object;
     if (!ParseObject(object, temp_object))
     {
       cout << "Failed to parse object" << endl;
@@ -286,7 +286,7 @@ bool SfTilemapLoader::ParseObjectLayer(const tinyxml2::XMLElement* _element, SfO
 
 
 ////////////////////////////////////////////////////////////
-bool SfTilemapLoader::ParseObject(const tinyxml2::XMLElement* _element, SfObject& _object)
+bool TilemapLoader::ParseObject(const tinyxml2::XMLElement* _element, Object& _object)
 {
   string name = _element->Attribute("name");
   _object.name = name;
@@ -308,7 +308,7 @@ bool SfTilemapLoader::ParseObject(const tinyxml2::XMLElement* _element, SfObject
   int gid = -1; _element->QueryIntAttribute("gid", &gid);
   _object.gid = gid;
 
-  bool visible = _element->IntAttribute("visible");
+  bool visible = static_cast<bool>(_element->IntAttribute("visible"));
   _object.visible = visible;
 
   ObjectType object_type;

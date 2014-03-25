@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////
 /// SfTileEngine: C++/SFML Tile Engine
-/// Copyright (C) 2013 Tyler Petresky
+/// Copyright (C) 2014 Tyler Petresky
 ///
 /// This program is free software: you can redistribute it and/or modify
 /// it under the terms of the GNU General Public License as published by
@@ -31,20 +31,20 @@
 
 #include <SFML\Graphics.hpp>
 
-#include "sf_tile_layer.h"
-#include "sf_object_layer.h"
-#include "sf_tileset.h"
-#include "sf_dll_macro.h"
+#include "tile_layer.h"
+#include "object_layer.h"
+#include "tileset.h"
+#include "dll_macro.h"
 
 /// Engine namespace
 namespace sftile
 {
-class SfCamera;
+class Camera;
 
 /// Private engine namespace
 namespace priv
 {
-class SfTilemapLoader;
+class TilemapLoader;
 
 /// Orientation of the tile map.
 enum TilemapOrientation
@@ -73,12 +73,12 @@ enum TilemapCompression
 }
 
 ////////////////////////////////////////////////////////////
-/// \class: SfTilemap
+/// \class: Tilemap
 /// \brief Class for storing and interacting with tile maps
 ///
 /// This class is used to store the data of a tile map.
 /// Duh! However, you can't load it directly. You always
-/// need to load the tile maps through your SfWorld object.
+/// need to load the tile maps through your World object.
 /// This is so that your world can know about this tile
 /// map and make sure it gets rendered and updated.
 ///
@@ -89,13 +89,13 @@ enum TilemapCompression
 ///
 /// Proper Usage:
 /// -- Loading Method --
-/// SfTilemap* tilemap = world.LoadTilemap("testmap", "res\\maps\\test_map.tmx");
+/// Tilemap* tilemap = world.LoadTilemap("testmap", "res\\maps\\test_map.tmx");
 ///
 ////////////////////////////////////////////////////////////
 
-class SF_TILE_API SfTilemap
+class SF_TILE_API Tilemap
 {
-friend class priv::SfTilemapLoader;
+friend class priv::TilemapLoader;
 public:
   ////////////////////////////////////////////////////////////
   /// \brief Default constructor
@@ -103,7 +103,7 @@ public:
   /// Constructs an empty tile map.
   ///
   ////////////////////////////////////////////////////////////
-  explicit SfTilemap();
+  explicit Tilemap();
 
 
   ////////////////////////////////////////////////////////////
@@ -112,7 +112,7 @@ public:
   /// Copies an existing tile map.
   ///
   ////////////////////////////////////////////////////////////
-  explicit SfTilemap(const SfTilemap& _copy);
+  explicit Tilemap(const Tilemap& _copy);
 
 
   ////////////////////////////////////////////////////////////
@@ -121,7 +121,7 @@ public:
   /// Copies an existing tile map.
   ///
   ////////////////////////////////////////////////////////////
-  SfTilemap& operator=(const SfTilemap& _copy);
+  Tilemap& operator=(const Tilemap& _copy);
 
 
   ////////////////////////////////////////////////////////////
@@ -130,7 +130,7 @@ public:
   /// Destroys the tile map.
   ///
   ////////////////////////////////////////////////////////////
-  ~SfTilemap();
+  ~Tilemap();
 
 
   ////////////////////////////////////////////////////////////
@@ -140,7 +140,7 @@ public:
   /// \param _camera Pointer to the camera object
   ///
   ////////////////////////////////////////////////////////////
-  void RegisterCamera(SfCamera* _camera);
+  void RegisterCamera(Camera* _camera);
 
 
   ////////////////////////////////////////////////////////////
@@ -171,19 +171,19 @@ public:
 
 private:
   /// Camera registered to the tile map
-  sftile::SfCamera* camera;
+  sftile::Camera* camera;
 
 
   /// Tileset to hold all tilesets in this tile map
-  priv::SfTileset tileset;
+  priv::Tileset tileset;
 
 
   /// Vector holding all tile layers
-  vector<priv::SfTileLayer> tile_layers;
+  vector<priv::TileLayer> tile_layers;
 
 
   /// Vector holding all object layers
-  vector<priv::SfObjectLayer> object_layers;
+  vector<priv::ObjectLayer> object_layers;
 
 
   /// Dimensions of the tile map in tiles

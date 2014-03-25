@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////
 /// SfTileEngine: C++/SFML Tile Engine
-/// Copyright (C) 2013 Tyler Petresky
+/// Copyright (C) 2014 Tyler Petresky
 ///
 /// This program is free software: you can redistribute it and/or modify
 /// it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@
 
 #include <SFML\Graphics.hpp>
 
-#include "sf_dll_macro.h"
+#include "dll_macro.h"
 
 /// Engine namespace
 namespace sftile
@@ -38,37 +38,38 @@ namespace sftile
 /// Private engine namespace
 namespace priv
 {
-class SfTilemapLoader;
+class TilemapLoader;
 
-class SF_TILE_API SfTileLayer
+class SF_TILE_API TileLayer
 {
-friend class SfTilemapLoader;
+friend class TilemapLoader;
 public:
   ////////////////////////////////////////////////////////////
   /// \brief Default constructor
   ///
-  /// Creates an empty layer object.
+  /// Creates an empty tile layer object.
   ///
   ////////////////////////////////////////////////////////////
-  explicit SfTileLayer();
+  explicit TileLayer();
 
 
   ////////////////////////////////////////////////////////////
   /// \brief Copy constructor
   ///
-  /// Copies an existing layer.
+  /// Copies an existing tile layer.
   ///
   ////////////////////////////////////////////////////////////
-  SfTileLayer(const SfTileLayer& _copy);
+  TileLayer(const TileLayer& _copy);
 
 
   ////////////////////////////////////////////////////////////
   /// \brief Assignment operator
   ///
-  /// Copies an existing layer.
+  /// Copies an existing tile layer.
   ///
   ////////////////////////////////////////////////////////////
-  SfTileLayer& operator=(const SfTileLayer& _copy);
+  TileLayer& operator=(const TileLayer& _copy);
+
 
   ////////////////////////////////////////////////////////////
   /// \brief Gets the tile GID at a specific location in the

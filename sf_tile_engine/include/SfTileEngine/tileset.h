@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////
 /// SfTileEngine: C++/SFML Tile Engine
-/// Copyright (C) 2013 Tyler Petresky
+/// Copyright (C) 2014 Tyler Petresky
 ///
 /// This program is free software: you can redistribute it and/or modify
 /// it under the terms of the GNU General Public License as published by
@@ -29,21 +29,21 @@
 
 #include <SFML\Graphics.hpp>
 
-#include "sf_dll_macro.h"
+#include "dll_macro.h"
 
 /// Engine namespace
 namespace sftile
 {
-class SfProperties;
+class Properties;
 
 /// Private engine namespace
 namespace priv
 {
-class SfTile;
-class SfTilemapLoader;
+class Tile;
+class TilemapLoader;
 
 ////////////////////////////////////////////////////////////
-/// \class SfTileset
+/// \class Tileset
 /// \brief Holds tileset data in the form of sf::Rect's
 ///
 /// "Put your outdoor work in order and get your fields
@@ -56,9 +56,9 @@ class SfTilemapLoader;
 /// entire tileset image.
 ///
 ////////////////////////////////////////////////////////////
-class SF_TILE_API SfTileset
+class SF_TILE_API Tileset
 {
-friend class priv::SfTilemapLoader;
+friend class priv::TilemapLoader;
 public:
   ////////////////////////////////////////////////////////////
   /// \brief Default constructor
@@ -66,7 +66,7 @@ public:
   /// Constructs an empty tileset.
   ///
   ////////////////////////////////////////////////////////////
-  explicit SfTileset();
+  explicit Tileset();
 
 
   ////////////////////////////////////////////////////////////
@@ -75,7 +75,7 @@ public:
   /// Copies an existing tileset.
   ///
   ////////////////////////////////////////////////////////////
-  SfTileset(const SfTileset& _copy);
+  Tileset(const Tileset& _copy);
 
 
   ////////////////////////////////////////////////////////////
@@ -84,14 +84,14 @@ public:
   /// Copies an existing tileset.
   ///
   ////////////////////////////////////////////////////////////
-  SfTileset& operator=(const SfTileset& _copy);
+  Tileset& operator=(const Tileset& _copy);
 
 
   ////////////////////////////////////////////////////////////
   /// \brief Destructor
   ///
   ////////////////////////////////////////////////////////////
-  ~SfTileset();
+  ~Tileset();
 
 
   ////////////////////////////////////////////////////////////
@@ -102,7 +102,7 @@ public:
   /// \return Pointer to tile if tile exists with GID
   ///
   ////////////////////////////////////////////////////////////
-  SfTile GetTile(const unsigned int _id);
+  Tile GetTile(const unsigned int _id);
 
 
   ////////////////////////////////////////////////////////////
@@ -132,7 +132,7 @@ private:
 
 
   /// Vector of tiles
-  vector<SfTile> tiles;
+  vector<Tile> tiles;
 
 
   /// Texture of the entire tileset in full

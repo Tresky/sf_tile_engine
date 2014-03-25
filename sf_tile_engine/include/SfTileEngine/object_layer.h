@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////
 /// SfTileEngine: C++/SFML Tile Engine
-/// Copyright (C) 2013 Tyler Petresky
+/// Copyright (C) 2014 Tyler Petresky
 ///
 /// This program is free software: you can redistribute it and/or modify
 /// it under the terms of the GNU General Public License as published by
@@ -29,8 +29,8 @@
 
 #include <SFML\Graphics.hpp>
 
-#include "sf_object.h"
-#include "sf_dll_macro.h"
+#include "object.h"
+#include "dll_macro.h"
 
 /// Engine namespace
 namespace sftile
@@ -39,10 +39,10 @@ namespace sftile
 /// Private engine namespace
 namespace priv
 {
-class SfTilemapLoader;
+class TilemapLoader;
 
 ////////////////////////////////////////////////////////////
-/// \class SfLayer
+/// \class ObjectLayer
 /// \brief Stores the GID's of the tiles in the layer
 ///        and renders them.
 /// 
@@ -52,17 +52,17 @@ class SfTilemapLoader;
 ///
 ////////////////////////////////////////////////////////////
 
-class SF_TILE_API SfObjectLayer
+class SF_TILE_API ObjectLayer
 {
-friend class SfTilemapLoader;
+friend class TilemapLoader;
 public:
   ////////////////////////////////////////////////////////////
   /// \brief Default constructor
   ///
-  /// Creates an empty layer object.
+  /// Creates an empty ObjectLayer object.
   ///
   ////////////////////////////////////////////////////////////
-  explicit SfObjectLayer();
+  explicit ObjectLayer();
 
 
   ////////////////////////////////////////////////////////////
@@ -71,7 +71,7 @@ public:
   /// Copies an existing layer.
   ///
   ////////////////////////////////////////////////////////////
-  SfObjectLayer(const SfObjectLayer& _copy);
+  ObjectLayer(const ObjectLayer& _copy);
 
 
   ////////////////////////////////////////////////////////////
@@ -80,7 +80,7 @@ public:
   /// Copies an existing layer.
   ///
   ////////////////////////////////////////////////////////////
-  SfObjectLayer& operator=(const SfObjectLayer& _copy);
+  ObjectLayer& operator=(const ObjectLayer& _copy);
 
 
   ////////////////////////////////////////////////////////////
@@ -100,11 +100,11 @@ public:
   /// \return Pointer to the indexed object
   ///
   ////////////////////////////////////////////////////////////
-  SfObject* GetObject(unsigned int _index);
+  Object* GetObject(unsigned int _index);
 
 private:
   /// Vector of the objects in the layer
-  vector<SfObject> objects;
+  vector<Object> objects;
 
 
   /// Tile dimensions in pixels
