@@ -28,41 +28,95 @@ namespace priv
 
 ////////////////////////////////////////////////////////////
 TileLayer::TileLayer()
-  : tile_gids()
-  , layer_dimensions(-1, -1)
+	: Layer()
+	, name("")
+	, tile_gids()
+	, layer_dimensions(-1, -1)
 {}
 
 
 ////////////////////////////////////////////////////////////
 TileLayer::TileLayer(const TileLayer& _copy)
-  : tile_gids(_copy.tile_gids)
-  , layer_dimensions(_copy.layer_dimensions)
+	: Layer(_copy)
+	, name(_copy.name)
+	, tile_gids(_copy.tile_gids)
+	, layer_dimensions(_copy.layer_dimensions)
+{}
+
+
+////////////////////////////////////////////////////////////
+TileLayer::TileLayer(TileLayer&& _copy)
+	: Layer(std::move(_copy))
+	, name(std::move(_copy.name))
+	, tile_gids(std::move(_copy.tile_gids))
+	, layer_dimensions(std::move(_copy.layer_dimensions))
 {}
 
 
 ////////////////////////////////////////////////////////////
 TileLayer& TileLayer::operator=(const TileLayer& _copy)
 {
-  if (this != &_copy)
-  {
-    TileLayer temp(_copy);
+	if (this != &_copy)
+	{
+		Layer::operator=(_copy);
 
-    std::swap(tile_gids, temp.tile_gids);
-    std::swap(layer_dimensions, temp.layer_dimensions);
-  }
+		TileLayer temp(_copy);
 
-  return *this;
+		std::swap(name, temp.name);
+		std::swap(tile_gids, temp.tile_gids);
+		std::swap(layer_dimensions, temp.layer_dimensions);
+	}
+
+	return *this;
+}
+
+
+////////////////////////////////////////////////////////////
+TileLayer& TileLayer::operator=(TileLayer&& _copy)
+{
+	if (this != &_copy)
+	{
+		Layer::operator=(std::move(_copy));
+
+		TileLayer temp(_copy);
+
+		name = std::move(temp.name);
+		tile_gids = std::move(temp.tile_gids);
+		layer_dimensions = std::move(temp.layer_dimensions);
+	}
+
+	return *this;
 }
 
 
 ////////////////////////////////////////////////////////////
 int TileLayer::GetTileGID(const int _x, const int _y)
 {
-  /// The TMX tileset stores tiles startring from 1.
-  /// Our vector stores them starting from 0.
-  int gid = tile_gids.at(_y).at(_x);
+	/// The TMX tileset stores tiles startring from 1.
+	/// Our vector stores them starting from 0.
+	int gid = tile_gids.at(_y).at(_x);
 
-  return gid;
+	return gid;
+}
+
+////////////////////////////////////////////////////////////
+string TileLayer::GetName()
+{
+	return name;
+}
+
+
+////////////////////////////////////////////////////////////
+string TileLayer::GetType()
+{
+	return "tile";
+}
+
+
+////////////////////////////////////////////////////////////
+sf::Vector2i TileLayer::GetDimensions()
+{
+	return layer_dimensions;
 }
 
 }

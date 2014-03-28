@@ -61,6 +61,34 @@ Object* ObjectLayer::GetObject(unsigned int _index)
   return &objects.at(_index);
 }
 
+
+////////////////////////////////////////////////////////////
+int ObjectLayer::GetNumObjects()
+{
+	return objects.size();
+}
+
+
+////////////////////////////////////////////////////////////
+string ObjectLayer::GetName()
+{
+	return name;
+}
+
+
+////////////////////////////////////////////////////////////
+string ObjectLayer::GetType()
+{
+	return "object";
+}
+
+
+////////////////////////////////////////////////////////////
+sf::Vector2i ObjectLayer::GetDimensions()
+{
+	return layer_dimensions;
+}
+
 }
 
 }

@@ -20,12 +20,12 @@
  #define SF_TILESET_H
 
  #include <iostream>
-  using std::cout;
-  using std::endl;
+	using std::cout;
+	using std::endl;
  #include <vector>
-  using std::vector;
+	using std::vector;
 #include <memory>
-  using std::unique_ptr;
+	using std::unique_ptr;
 
 #include <SFML\Graphics.hpp>
 
@@ -60,87 +60,87 @@ class SF_TILE_API Tileset
 {
 friend class priv::TilemapLoader;
 public:
-  ////////////////////////////////////////////////////////////
-  /// \brief Default constructor
-  ///
-  /// Constructs an empty tileset.
-  ///
-  ////////////////////////////////////////////////////////////
-  explicit Tileset();
+	////////////////////////////////////////////////////////////
+	/// \brief Default constructor
+	///
+	/// Constructs an empty tileset.
+	///
+	////////////////////////////////////////////////////////////
+	explicit Tileset();
 
 
-  ////////////////////////////////////////////////////////////
-  /// \brief Copy constructor
-  ///
-  /// Copies an existing tileset.
-  ///
-  ////////////////////////////////////////////////////////////
-  Tileset(const Tileset& _copy);
+	////////////////////////////////////////////////////////////
+	/// \brief Copy constructor
+	///
+	/// Copies an existing tileset.
+	///
+	////////////////////////////////////////////////////////////
+	Tileset(const Tileset& _copy);
 
 
-  ////////////////////////////////////////////////////////////
-  /// \brief Assignment operator
-  ///
-  /// Copies an existing tileset.
-  ///
-  ////////////////////////////////////////////////////////////
-  Tileset& operator=(const Tileset& _copy);
+	////////////////////////////////////////////////////////////
+	/// \brief Assignment operator
+	///
+	/// Copies an existing tileset.
+	///
+	////////////////////////////////////////////////////////////
+	Tileset& operator=(const Tileset& _copy);
 
 
-  ////////////////////////////////////////////////////////////
-  /// \brief Destructor
-  ///
-  ////////////////////////////////////////////////////////////
-  ~Tileset();
+	////////////////////////////////////////////////////////////
+	/// \brief Destructor
+	///
+	////////////////////////////////////////////////////////////
+	~Tileset();
 
 
-  ////////////////////////////////////////////////////////////
-  /// \brief Returns a pointer to a tile with a specified
-  ///        GID.
-  ///
-  /// \param _id GID of the desired tile
-  /// \return Pointer to tile if tile exists with GID
-  ///
-  ////////////////////////////////////////////////////////////
-  Tile GetTile(const unsigned int _id);
+	////////////////////////////////////////////////////////////
+	/// \brief Returns a pointer to a tile with a specified
+	///        GID.
+	///
+	/// \param _id GID of the desired tile
+	/// \return Pointer to tile if tile exists with GID
+	///
+	////////////////////////////////////////////////////////////
+	Tile GetTile(const unsigned int _id);
 
 
-  ////////////////////////////////////////////////////////////
-  /// \brief Returns the number of tiles in the tileset.
-  ///
-  /// \return Number of tiles in the tileset
-  ///
-  ////////////////////////////////////////////////////////////
-  const int GetNumTiles();
+	////////////////////////////////////////////////////////////
+	/// \brief Returns the number of tiles in the tileset.
+	///
+	/// \return Number of tiles in the tileset
+	///
+	////////////////////////////////////////////////////////////
+	const int GetNumTiles();
 
 
-  ////////////////////////////////////////////////////////////
-  /// \brief Renders a specific tile in the tileset at a
-  ///        specified position.
-  ///
-  /// \param _window SFML window to render to
-  /// \param _id GID of tile to render
-  /// \param _x X position to render tile at (in pixels)
-  /// \param _y Y position to render tile at (in pixels)
-  ///
-  ////////////////////////////////////////////////////////////
-  void RenderTile(sf::RenderWindow& _window, const unsigned int _id, const float _x, const float _y);
+	////////////////////////////////////////////////////////////
+	/// \brief Renders a specific tile in the tileset at a
+	///        specified position.
+	///
+	/// \param _window SFML window to render to
+	/// \param _id GID of tile to render
+	/// \param _x X position to render tile at (in pixels)
+	/// \param _y Y position to render tile at (in pixels)
+	///
+	////////////////////////////////////////////////////////////
+	void RenderTile(sf::RenderWindow& _window, const unsigned int _id, const float _x, const float _y);
 
 private:
-  /// Dimensions of the tiles in pixels
-  sf::Vector2i tile_dimensions;;
+	/// Dimensions of the tiles in pixels
+	sf::Vector2i tile_dimensions;;
 
 
-  /// Vector of tiles
-  vector<Tile> tiles;
+	/// Vector of tiles
+	vector<Tile> tiles;
 
 
-  /// Texture of the entire tileset in full
-  sf::Texture tileset_image;
+	/// Texture of the entire tileset in full
+	sf::Texture tileset_image;
 
 
-  /// Properties of the tileset
-  //unique_ptr<SfProperties> properties;
+	/// Properties of the tileset
+	//unique_ptr<SfProperties> properties;
 };
 
 }

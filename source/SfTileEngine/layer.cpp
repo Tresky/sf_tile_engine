@@ -28,6 +28,27 @@ Layer& Layer::operator=(const Layer& _copy)
 	return *this;
 }
 
+
+////////////////////////////////////////////////////////////
+string Layer::GetName()
+{
+	return "null";
+}
+
+
+////////////////////////////////////////////////////////////
+string Layer::GetType()
+{
+	return "null";
+}
+
+
+////////////////////////////////////////////////////////////
+sf::Vector2i Layer::GetDimensions()
+{
+	return sf::Vector2i(0, 0);
+}
+
 }
 
 }

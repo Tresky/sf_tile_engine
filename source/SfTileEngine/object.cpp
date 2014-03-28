@@ -23,7 +23,7 @@ namespace sftile
 
 ////////////////////////////////////////////////////////////
 Object::Object()
-  : object_type(SF_OBJECT_TYPE_UNKNOWN)
+  : object_type(priv::SF_OBJECT_TYPE_UNKNOWN)
   , name("")
   , string_type("")
   , position(0, 0)
@@ -72,6 +72,25 @@ Object& Object::operator=(const Object& _copy)
 string Object::GetName()
 {
   return name;
+}
+
+
+string Object::GetType()
+{
+	if (object_type == priv::ObjectType::SF_OBJECT_TYPE_UNKNOWN)
+		return "unknown";
+	else if (object_type == priv::ObjectType::SF_OBJECT_TYPE_TILE)
+		return "tile";
+	else if (object_type == priv::ObjectType::SF_OBJECT_TYPE_ELLIPSE)
+		return "ellipse";
+	else if (object_type == priv::ObjectType::SF_OBJECT_TYPE_POLYGON)
+		return "polygon";
+	else if (object_type == priv::ObjectType::SF_OBJECT_TYPE_POLYLINE)
+		return "polyline";
+	else if (object_type == priv::ObjectType::SF_OBJECT_TYPE_IMAGE)
+		return "image";
+	else
+		return "null";
 }
 
 

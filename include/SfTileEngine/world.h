@@ -20,14 +20,14 @@
 #define SF_WORLD_H
 
 #include <iostream>
-  using std::cout;
-  using std::endl;
+	using std::cout;
+	using std::endl;
 #include <string>
-  using std::string;
+	using std::string;
 #include <map>
-  using std::map;
+	using std::map;
 #include <memory>
-  using std::unique_ptr;
+	using std::unique_ptr;
 
 #include <SFML\Graphics.hpp>
 
@@ -38,7 +38,7 @@
 /// Engine namespace
 namespace sftile
 {
-class SfTilemap;
+class Tilemap;
 
 ////////////////////////////////////////////////////////////
 /// \class World
@@ -100,121 +100,121 @@ class SF_TILE_API World
 {
 public:
 	////////////////////////////////////////////////////////////
-  /// \brief Default constructor
-  ///
-  /// Creates an empty world object.
-  ///
-  ////////////////////////////////////////////////////////////
-  explicit World();
+	/// \brief Default constructor
+	///
+	/// Creates an empty world object.
+	///
+	////////////////////////////////////////////////////////////
+	explicit World();
 
 
-  ////////////////////////////////////////////////////////////
-  /// \brief Copy constructor
-  ///
-  /// Copies an existing world object.
-  ///
-  ////////////////////////////////////////////////////////////
-  World(const World& _copy);
+	////////////////////////////////////////////////////////////
+	/// \brief Copy constructor
+	///
+	/// Copies an existing world object.
+	///
+	////////////////////////////////////////////////////////////
+	World(const World& _copy);
+
+	
+	////////////////////////////////////////////////////////////
+	/// \brief Assignment operator
+	///
+	/// Copies an existing world object.
+	///
+	////////////////////////////////////////////////////////////
+	World& operator=(const World& _copy);
 
 
-  ////////////////////////////////////////////////////////////
-  /// \brief Assignment operator
-  ///
-  /// Copies an existing world object.
-  ///
-  ////////////////////////////////////////////////////////////
-  World& operator=(const World& _copy);
+	////////////////////////////////////////////////////////////
+	/// \brief Loads a tile map from a TMX file.
+	///
+	/// The tile map is stored as an instantiated object here
+	/// in the world object. However, a pointer to that
+	/// specific tile map is stored outside where the user
+	/// can access it, so they can maintain control over 
+	/// their tile map.
+	///
+	/// \param _id Unique string ID of the tile map
+	/// \param _path Filepath to the TMX file
+	///
+	/// \return Pointer to the loaded tile map if successful
+	///
+	////////////////////////////////////////////////////////////
+	Tilemap* LoadTilemap(string _id, string _path);
 
 
-  ////////////////////////////////////////////////////////////
-  /// \brief Loads a tile map from a TMX file.
-  ///
-  /// The tile map is stored as an instantiated object here
-  /// in the world object. However, a pointer to that
-  /// specific tile map is stored outside where the user
-  /// can access it, so they can maintain control over 
-  /// their tile map.
-  ///
-  /// \param _id Unique string ID of the tile map
-  /// \param _path Filepath to the TMX file
-  ///
-  /// \return Pointer to the loaded tile map if successful
-  ///
-  ////////////////////////////////////////////////////////////
-  Tilemap* LoadTilemap(string _id, string _path);
+	////////////////////////////////////////////////////////////
+	/// \brief Return a pointer to a previously loaded 
+	///        tile map.
+	///
+	/// \param _id Unique string ID of the tile map
+	/// \return Pointer to the tile map if successful
+	///
+	////////////////////////////////////////////////////////////
+	Tilemap* GetTilemap(string _id);	
 
 
-  ////////////////////////////////////////////////////////////
-  /// \brief Return a pointer to a previously loaded 
-  ///        tile map.
-  ///
-  /// \param _id Unique string ID of the tile map
-  /// \return Pointer to the tile map if successful
-  ///
-  ////////////////////////////////////////////////////////////
-  Tilemap* GetTilemap(string _id);
+	////////////////////////////////////////////////////////////
+	/// \brief Handles any events referring to the tile engine.
+	/// 
+	/// \param _evt SFML event object
+	///
+	////////////////////////////////////////////////////////////
+	void HandleEvents(sf::Event _evt);
 
 
-  ////////////////////////////////////////////////////////////
-  /// \brief Handles any events referring to the tile engine.
-  /// 
-  /// \param _evt SFML event object
-  ///
-  ////////////////////////////////////////////////////////////
-  void HandleEvents(sf::Event _evt);
+	////////////////////////////////////////////////////////////
+	/// \brief Updates anything in the tile engine that needs
+	///        updating.
+	///
+	////////////////////////////////////////////////////////////
+	void Update();
 
 
-  ////////////////////////////////////////////////////////////
-  /// \brief Updates anything in the tile engine that needs
-  ///        updating.
-  ///
-  ////////////////////////////////////////////////////////////
-  void Update();
-
-
-  ////////////////////////////////////////////////////////////
-  /// \brief Renders the currently visible tile map.
-  ///
-  /// \param _window SFML window to render to
-  ///
-  ////////////////////////////////////////////////////////////
-  void Render(sf::RenderWindow& _window);
+	////////////////////////////////////////////////////////////
+	/// \brief Renders the currently visible tile map.
+	///
+	/// \param _window SFML window to render to
+	///
+	////////////////////////////////////////////////////////////
+	void Render(sf::RenderWindow& _window);
 
 
 private:
-  ////////////////////////////////////////////////////////////
-  /// \brief Loads a tile map from a TMX file.
-  ///
-  /// \param _path Filepath to the TMX file
-  ///
-  /// \return True if loading was successful
-  ///
-  ////////////////////////////////////////////////////////////
-  bool LoadFromTMX(string _path);
+	////////////////////////////////////////////////////////////
+	/// \brief Loads a tile map from a TMX file.
+	///
+	/// \param _path Filepath to the TMX file
+	///
+	/// \return True if loading was successful
+	///
+	////////////////////////////////////////////////////////////
+	bool LoadFromTMX(string _path);
 
 
-  ////////////////////////////////////////////////////////////
-  /// \brief Checks for the existence of a tile map with
-  ///        a specific string ID.
-  ///
-  /// \param _id Unique string ID of the tile map
-  ///
-  /// \return True if tile map exists
-  ///
-  ////////////////////////////////////////////////////////////
-  bool MapExists(string _id);
+	////////////////////////////////////////////////////////////
+	/// \brief Checks for the existence of a tile map with
+	///        a specific string ID.
+	///
+	/// \param _id Unique string ID of the tile map
+	///
+	/// \return True if tile map exists
+	///
+	////////////////////////////////////////////////////////////
+	bool MapExists(string _id);
 
 
-  /// Takes care of loading the tile maps
-  priv::TilemapLoader loader;
+	/// Takes care of loading the tile maps
+	priv::TilemapLoader loader;
 
 
-  /// Tile maps
-  map<string, Tilemap> tilemaps;
+	/// Tile maps
+	map<string, Tilemap> tilemaps;
 
 
-  /// String ID of currently visible tile map
-  string current_id;
+	/// String ID of currently visible tile map
+	string current_id;
 };
 
 }

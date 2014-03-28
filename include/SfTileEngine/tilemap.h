@@ -20,20 +20,21 @@
 #define SF_TILEMAP_H
 
 #include <iostream>
-  using std::cout;
-  using std::endl;
+	using std::cout;
+	using std::endl;
 #include <memory>
-  using std::unique_ptr;
+	using std::unique_ptr;
 #include <string>
-  using std::string;
+	using std::string;
 #include <vector>
-  using std::vector;
+	using std::vector;
 
 #include <SFML\Graphics.hpp>
 
 #include "tile_layer.h"
 #include "object_layer.h"
 #include "tileset.h"
+#include "entity.h"
 #include "dll_macro.h"
 
 /// Engine namespace
@@ -49,25 +50,25 @@ class TilemapLoader;
 /// Orientation of the tile map.
 enum TilemapOrientation
 {
-  SFTILE_ORIENT_UNSUPPORTED = -1,
-  SFTILE_ORIENT_ORTHOGONAL = 0,
+	SFTILE_ORIENT_UNSUPPORTED = -1,
+	SFTILE_ORIENT_ORTHOGONAL = 0,
 };
 
 /// Encoding of the tile map data.
 enum TilemapEncoding
 {
-  SFTILE_ENCODING_UNSUPPORTED = -1,
-  SFTILE_ENCODING_XML = 0,
-  SFTILE_ENCODING_BASE64,
-  SFTILE_ENCODING_CSV
+	SFTILE_ENCODING_UNSUPPORTED = -1,
+	SFTILE_ENCODING_XML = 0,
+	SFTILE_ENCODING_BASE64,
+	SFTILE_ENCODING_CSV
 };
 
 /// Compression of the tile map data.
 enum TilemapCompression
 {
-  SFTILE_COMPRESS_NONE = 0,
-  SFTILE_COMPRESS_GZIP,
-  SFTILE_COMPRESS_ZLIB
+	SFTILE_COMPRESS_NONE = 0,
+	SFTILE_COMPRESS_GZIP,
+	SFTILE_COMPRESS_ZLIB
 };
 
 }
@@ -95,119 +96,156 @@ enum TilemapCompression
 
 class SF_TILE_API Tilemap
 {
+	friend class World;
 friend class priv::TilemapLoader;
 public:
-  ////////////////////////////////////////////////////////////
-  /// \brief Default constructor
-  ///
-  /// Constructs an empty tile map.
-  ///
-  ////////////////////////////////////////////////////////////
-  explicit Tilemap();
+	////////////////////////////////////////////////////////////
+	/// \brief Default constructor
+	///
+	/// Constructs an empty tile map.
+	///
+	////////////////////////////////////////////////////////////
+	explicit Tilemap();
 
 
-  ////////////////////////////////////////////////////////////
-  /// \brief Copy constructor
-  ///
-  /// Copies an existing tile map.
-  ///
-  ////////////////////////////////////////////////////////////
-  explicit Tilemap(const Tilemap& _copy);
+	////////////////////////////////////////////////////////////
+	/// \brief Copy constructor
+	///
+	/// Copies an existing tile map.
+	///
+	////////////////////////////////////////////////////////////
+	explicit Tilemap(const Tilemap& _copy);
 
 
-  ////////////////////////////////////////////////////////////
-  /// \brief Assignment operator
-  ///
-  /// Copies an existing tile map.
-  ///
-  ////////////////////////////////////////////////////////////
-  Tilemap& operator=(const Tilemap& _copy);
+	////////////////////////////////////////////////////////////
+	/// \brief Move constructor
+	///
+	/// Moves an existing tile map. This is needed for the sake
+	/// of using unique_ptr's.
+	///
+	////////////////////////////////////////////////////////////
+	Tilemap(Tilemap&& _copy);
 
 
-  ////////////////////////////////////////////////////////////
-  /// \brief Destructor
-  ///
-  /// Destroys the tile map.
-  ///
-  ////////////////////////////////////////////////////////////
-  ~Tilemap();
+	////////////////////////////////////////////////////////////
+	/// \brief Move assignment operator
+	///
+	/// Moves an existing tile map.
+	///
+	////////////////////////////////////////////////////////////
+	Tilemap& operator=(Tilemap&& _copy);
 
 
-  ////////////////////////////////////////////////////////////
-  /// \brief Registers a camera with the tile map by saving
-  ///        a pointer to the camera object.
-  ///
-  /// \param _camera Pointer to the camera object
-  ///
-  ////////////////////////////////////////////////////////////
-  void RegisterCamera(Camera* _camera);
+	////////////////////////////////////////////////////////////
+	/// \brief Destructor
+	///
+	/// Destroys the tile map.
+	///
+	////////////////////////////////////////////////////////////
+	~Tilemap();
 
 
-  ////////////////////////////////////////////////////////////
-  /// \brief Handles any events referring to the tile map.
-  ///
-  /// \param _evt SFML event object
-  ///
-  ////////////////////////////////////////////////////////////
-  void HandleEvents(sf::Event _evt);
+	////////////////////////////////////////////////////////////
+	/// \brief Registers a camera with the tile map by saving
+	///        a pointer to the camera object.
+	///
+	/// \param _camera Pointer to the camera object
+	///
+	////////////////////////////////////////////////////////////
+	void RegisterCamera(Camera* _camera);
 
 
-  ////////////////////////////////////////////////////////////
-  /// \brief Updates anything in the tile map that needs
-  ///        updating.
-  ///
-  ////////////////////////////////////////////////////////////
-  void Update();
+	////////////////////////////////////////////////////////////
+	/// \brief Handles any events referring to the tile map.
+	///
+	/// \param _evt SFML event object
+	///
+	////////////////////////////////////////////////////////////
+	void HandleEvents(sf::Event _evt);
 
 
-  ////////////////////////////////////////////////////////////
-  /// \brief Renders the tile map.
-  ///
-  /// \param _window SFML window to render to
-  ///
-  ////////////////////////////////////////////////////////////
-  void Render(sf::RenderWindow& _window);
+	////////////////////////////////////////////////////////////
+	/// \brief Updates anything in the tile map that needs
+	///        updating.
+	///
+	////////////////////////////////////////////////////////////
+	void Update();
+
+
+	////////////////////////////////////////////////////////////
+	/// \brief Renders the tile map.
+	///
+	/// \param _window SFML window to render to
+	///
+	////////////////////////////////////////////////////////////
+	void Render(sf::RenderWindow& _window);
 
 
 private:
-  /// Camera registered to the tile map
-  sftile::Camera* camera;
+	////////////////////////////////////////////////////////////
+	/// \brief Assignment operator
+	///
+	/// Copies an existing tile map.
+	///
+	////////////////////////////////////////////////////////////
+	Tilemap& operator=(const Tilemap& _copy);
 
 
-  /// Tileset to hold all tilesets in this tile map
-  priv::Tileset tileset;
+	void RenderTileLayer(sf::RenderWindow& _window, priv::Layer& _layer);
 
 
+	void RenderObjectLayer(sf::RenderWindow& _window, priv::Layer& _layer);
+
+
+	void RenderImageLayer(sf::RenderWindow& _window, priv:: Layer& _layer);
+
+
+	/// Camera registered to the tile map
+	sftile::Camera* camera;
+
+
+	/// Tileset to hold all tilesets in this tile map
+	priv::Tileset tileset;
+
+		
+	/// Vector of all layers: tile, object, image
+	vector< unique_ptr<priv::Layer> > layers;
+
+	/*
   /// Vector holding all tile layers
   vector<priv::TileLayer> tile_layers;
 
 
   /// Vector holding all object layers
   vector<priv::ObjectLayer> object_layers;
+	*/
+
+	/// Vector of entities in the map
+	vector<Entity> entities;
 
 
-  /// Dimensions of the tile map in tiles
-  sf::Vector2i map_dimensions;
+	/// Dimensions of the tile map in tiles
+	sf::Vector2i map_dimensions;
 
 
-  /// Dimensions of the tiles in the map in pixels
-  sf::Vector2i tile_dimensions;
+	/// Dimensions of the tiles in the map in pixels
+	sf::Vector2i tile_dimensions;
 
 
-  /// Version of TMX being used
-  float version;
+	/// Version of TMX being used
+	float version;
 
 
-  /// Orientation of the tile map
-  priv::TilemapOrientation orientation;
+	/// Orientation of the tile map
+	priv::TilemapOrientation orientation;
 
 
-  /// Encoding of the tile map
-  priv::TilemapEncoding encoding;
+	/// Encoding of the tile map
+	priv::TilemapEncoding encoding;
 
 
-  /// Compression of the tile map
-  priv::TilemapCompression compression;
+	/// Compression of the tile map
+	priv::TilemapCompression compression;
 };
 
 }

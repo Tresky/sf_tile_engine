@@ -33,97 +33,142 @@ bool CheckPointer(const void* _ptr, string _error)
 ////////////////////////////////////////////////////////////
 bool TilemapLoader::LoadTilemap(const string _path, Tilemap& _tilemap)
 {
-  // Temporary map object
-  Tilemap temp_map;
+	// Temporary map object
+	Tilemap temp_map;
 
-  // Load TMX file in TinyXML
-  XMLDocument doc;
-  doc.LoadFile(_path.c_str());
+	// Load TMX file in TinyXML
+	XMLDocument doc;
+	doc.LoadFile(_path.c_str());
 
-  // Check for error in parsing
-  if (doc.Error())
-  {
-    cout << "XML Parsing Error: " << doc.ErrorID() << endl;
-    return false;
-  }
+	// Check for error in parsing
+	if (doc.Error())
+	{
+		cout << "XML Parsing Error: " << doc.ErrorID() << endl;
+		return false;
+	}
 
-  // Find the map element
-  const XMLElement* map_element = doc.FirstChildElement("map");
-  if (!CheckPointer(map_element, "Couldn't locate map element in map file"))
-    return false;
+	// Find the map element
+	const XMLElement* map_element = doc.FirstChildElement("map");
+	if (!CheckPointer(map_element, "Couldn't locate map element in map file"))
+		return false;
 
-  // Load all of the basic map data
-  map_element->QueryFloatAttribute("version", &temp_map.version);
-  map_element->QueryIntAttribute("width", &temp_map.map_dimensions.x);
-  map_element->QueryIntAttribute("height", &temp_map.map_dimensions.y);
-  map_element->QueryIntAttribute("tilewidth", &temp_map.tile_dimensions.x);
-  map_element->QueryIntAttribute("tileheight", &temp_map.tile_dimensions.y);
+	// Load all of the basic map data
+	map_element->QueryFloatAttribute("version", &temp_map.version);
+	map_element->QueryIntAttribute("width", &temp_map.map_dimensions.x);
+	map_element->QueryIntAttribute("height", &temp_map.map_dimensions.y);
+	map_element->QueryIntAttribute("tilewidth", &temp_map.tile_dimensions.x);
+	map_element->QueryIntAttribute("tileheight", &temp_map.tile_dimensions.y);
 
-  // Load the orientation of the tile map. Only orthogonal
-  // is supported currently.
-  string orient_str = map_element->Attribute("orientation");
-  if (orient_str == "orthogonal")
-    temp_map.orientation = SFTILE_ORIENT_ORTHOGONAL;
-  else
-  {
-    cout << "SfTileEngine currently only supports orthogonal tile maps." << endl;
-    temp_map.orientation = SFTILE_ORIENT_UNSUPPORTED;
-    return false;
-  }
+	// Load the orientation of the tile map. Only orthogonal
+	// is supported currently.
+	string orient_str = map_element->Attribute("orientation");
+	if (orient_str == "orthogonal")
+		temp_map.orientation = SFTILE_ORIENT_ORTHOGONAL;
+	else
+	{
+		cout << "SfTileEngine currently only supports orthogonal tile maps." << endl;
+		temp_map.orientation = SFTILE_ORIENT_UNSUPPORTED;
+		return false;
+	}
 
-  // Parse the tilesets in the tile map.
-  const XMLElement* tileset_element = map_element->FirstChildElement("tileset");
-  while (tileset_element)
-  {
-    if (!ParseTileset(tileset_element, temp_map.tileset))
-    {
-      cout << "Failed to parse tileset" << endl;
-      return false;
-    }
-    tileset_element = tileset_element->NextSiblingElement("tileset");
-  }
-  // Don't let your pointer dangle... That's gross.
-  tileset_element = nullptr;
+	// Parse the tilesets in the tile map.
+	const XMLElement* tileset_element = map_element->FirstChildElement("tileset");
+	while (tileset_element)
+	{
+		if (!ParseTileset(tileset_element, temp_map.tileset))
+		{
+			cout << "Failed to parse tileset" << endl;
+			return false;
+		}
+		tileset_element = tileset_element->NextSiblingElement("tileset");
+	}
+	// Don't let your pointer dangle... That's gross.
+	tileset_element = nullptr;
 
-  // Parse the tile layers
-  const XMLElement* tile_layer_element = map_element->FirstChildElement("layer");
-  while (tile_layer_element)
-  {
-    TileLayer temp_tile_layer;
-    if (!ParseTileLayer(tile_layer_element, temp_tile_layer))
-    {
-      cout << "Failed to parse tile layer" << endl;
-      return false;
-    }
-    else
-    {
-      temp_map.tile_layers.push_back(temp_tile_layer);
-    }
-    tile_layer_element = tile_layer_element->NextSiblingElement("layer");
-  }
-  tile_layer_element = nullptr;
+	// Parse all layers: tile, object, image
+	const XMLElement* layer_element = map_element->FirstChildElement();
+	while (layer_element)
+	{
+		string name = layer_element->Name();
+		if (name == "layer")
+		{
+			TileLayer temp_tile_layer;
+			if (!ParseTileLayer(layer_element, temp_tile_layer))
+			{
+				cout << "Failed to parse tile layer" << endl;
+				return false;
+			}
+			else
+				temp_map.layers.push_back(unique_ptr<TileLayer>(new TileLayer(temp_tile_layer)));
+		}
+		else if (name == "objectgroup")
+		{
+			ObjectLayer temp_object_layer;
+			if (!ParseObjectLayer(layer_element, temp_object_layer))
+			{
+				cout << "Failed to parse object layer" << endl;
+				return false;
+			}
+			else
+				temp_map.layers.push_back(unique_ptr<ObjectLayer>(new ObjectLayer(temp_object_layer)));
+		}
+		/*else if (layer_element->Name() == "imagelayer")
+		{
+			ImageLayer temp_image_layer;
+			if (!ParseImageLayer(layer_element, temp_image_layer))
+			{
+				cout << "Failed to parse image layer" << endl;
+				return false;
+			}
+			else
+				temp_map.layers.push_back(unique_ptr<ImageLayer>(new ImageLayer(temp_image_layer)));
+		}*/
+		layer_element = layer_element->NextSiblingElement();
+	}
+	layer_element = nullptr;
 
-  /// Parse the tile layers (object groups)
-  const XMLElement* object_layer_element = map_element->FirstChildElement("objectgroup");
-  while (object_layer_element)
-  {
-    ObjectLayer temp_object_layer;
-    if (!ParseObjectLayer(object_layer_element, temp_object_layer))
-    {
-      cout << "Failed to parse object layer" << endl;
-      return false;
-    }
-    else
-    {
-      temp_map.object_layers.push_back(temp_object_layer);
-    }
-    object_layer_element = object_layer_element->NextSiblingElement("objectgroup");
-  }
-  object_layer_element = nullptr;
 
-  _tilemap = temp_map;
 
-  return true;
+	/*
+	// Parse the tile layers
+	const XMLElement* tile_layer_element = map_element->FirstChildElement("layer");
+	while (tile_layer_element)
+	{
+		TileLayer temp_tile_layer;
+		if (!ParseTileLayer(tile_layer_element, temp_tile_layer))
+		{
+		cout << "Failed to parse tile layer" << endl;
+		return false;
+		}
+		else
+		{
+			temp_map.layers.push_back(unique_ptr<TileLayer>(new TileLayer(temp_tile_layer)));
+		}
+		tile_layer_element = tile_layer_element->NextSiblingElement("layer");
+	}
+	tile_layer_element = nullptr;*/
+
+	/// Parse the object layers (object groups)
+	/*const XMLElement* object_layer_element = map_element->FirstChildElement("objectgroup");
+	while (object_layer_element)
+	{
+		ObjectLayer temp_object_layer;
+		if (!ParseObjectLayer(object_layer_element, temp_object_layer))
+		{
+			cout << "Failed to parse object layer" << endl;
+			return false;
+		}
+		else
+		{
+			temp_map.layers.push_back(temp_object_layer);
+		}
+		object_layer_element = object_layer_element->NextSiblingElement("objectgroup");
+	}
+	object_layer_element = nullptr;*/
+
+	_tilemap = std::move(temp_map);
+
+	return true;
 }
 
 ////////////////////////////////////////////////////////////
@@ -187,6 +232,7 @@ bool TilemapLoader::ParseTileLayer(const XMLElement* _element, TileLayer& _tile_
   _element->QueryIntAttribute("width", &layer_dimensions.x);
   _element->QueryIntAttribute("height", &layer_dimensions.y);
 
+	_tile_layer.name = name;
   _tile_layer.layer_dimensions = layer_dimensions;
 
   // Load the data node
@@ -249,113 +295,116 @@ bool TilemapLoader::ParseCsvTileLayer(const XMLElement* _element, TileLayer& _ti
 ////////////////////////////////////////////////////////////
 bool TilemapLoader::ParseObjectLayer(const tinyxml2::XMLElement* _element, ObjectLayer& _object_layer)
 {
-  string name = _element->Attribute("name");
-  _object_layer.name = name;
+	string name = _element->Attribute("name");
+	_object_layer.name = name;
 
-  cout << "Loading object layer: " << name << endl;
+	cout << "Loading object layer: " << name << endl;
 
-  int width = _element->IntAttribute("width");
-  int height = _element->IntAttribute("height");
-  _object_layer.layer_dimensions = sf::Vector2i(width, height);
+	int width = _element->IntAttribute("width");
+	int height = _element->IntAttribute("height");
+	_object_layer.layer_dimensions = sf::Vector2i(width, height);
 
-  float opacity = _element->FloatAttribute("opacity");
-  _object_layer.opacity = opacity;
+	float opacity = _element->FloatAttribute("opacity");
+	_object_layer.opacity = opacity;
 
-  bool visible = static_cast<bool>(_element->IntAttribute("visible"));
-  _object_layer.visible = visible;
+	bool visible = static_cast<bool>(_element->IntAttribute("visible"));
+	_object_layer.visible = visible;
 
-  const XMLElement* object = _element->FirstChildElement("object");
-  while (object)
-  {
-    Object temp_object;
-    if (!ParseObject(object, temp_object))
-    {
-      cout << "Failed to parse object" << endl;
-      return false;
-    }
-    else
-      _object_layer.objects.push_back(temp_object);
+	const XMLElement* object = _element->FirstChildElement("object");
+	while (object)
+	{
+		Object temp_object;
+		if (!ParseObject(object, temp_object))
+		{
+			cout << "Failed to parse object" << endl;
+			return false;
+		}
+		else
+			_object_layer.objects.push_back(temp_object);
 
-    object = object->NextSiblingElement("object");
-  }
+		object = object->NextSiblingElement("object");
+	}
 
-  object = nullptr;
+	object = nullptr;
 
-  return true;
+	return true;
 }
 
 
 ////////////////////////////////////////////////////////////
 bool TilemapLoader::ParseObject(const tinyxml2::XMLElement* _element, Object& _object)
 {
-  string name = _element->Attribute("name");
-  _object.name = name;
 
-  string type = _element->Attribute("type");
-  _object.string_type = type;
+	string name = (_element->Attribute("name") != 0) ? _element->Attribute("name") : "";
+	_object.name = name;
 
-  int x = _element->IntAttribute("x");
-  int y = _element->IntAttribute("y");
-  _object.position = sf::Vector2i(x, y);
+	string type = (_element->Attribute("type") != 0) ? _element->Attribute("type") : "";
+	_object.string_type = type;
 
-  int width = _element->IntAttribute("width");
-  int height = _element->IntAttribute("height");
-  _object.dimensions = sf::Vector2i(width, height);
+	int x = _element->IntAttribute("x");
+	int y = _element->IntAttribute("y");
+	_object.position = sf::Vector2i(x, y);
 
-  float rotation = _element->FloatAttribute("rotation");
-  _object.rotation = rotation;
+	int width = _element->IntAttribute("width");
+	int height = _element->IntAttribute("height");
+	_object.dimensions = sf::Vector2i(width, height);
 
-  int gid = -1; _element->QueryIntAttribute("gid", &gid);
-  _object.gid = gid;
+	float rotation = _element->FloatAttribute("rotation");
+	_object.rotation = rotation;
 
-  bool visible = static_cast<bool>(_element->IntAttribute("visible"));
-  _object.visible = visible;
+	int gid = -1; _element->QueryIntAttribute("gid", &gid);
+	_object.gid = gid;
 
-  ObjectType object_type;
-  if (gid != -1)
-  {
-    object_type = SF_OBJECT_TYPE_TILE;
-    return true;
-  }
+	bool visible = static_cast<bool>(_element->IntAttribute("visible"));
+	_object.visible = visible;
 
-  const XMLElement* child_element = _element->FirstChildElement();
-  if (child_element != nullptr)
-  {
-    string child_name = child_element->Name();
+	ObjectType object_type;
+	if (gid != -1)
+	{
+		_object.object_type = SF_OBJECT_TYPE_TILE;
+		return true;
+	}
 
-    if (child_name == "ellipse")
-    {
-      object_type = SF_OBJECT_TYPE_UNKNOWN;
-      cout << "Ellipse objects unsupported" << endl;
-      return false;
-    }
-    else if (child_name == "polygon")
-    {
-      object_type = SF_OBJECT_TYPE_UNKNOWN;
-      cout << "Polygon objects unsupported" << endl;
-      return false;
-    }
-    else if (child_name == "polyline")
-    {
-      object_type = SF_OBJECT_TYPE_UNKNOWN;
-      cout << "Polyline objects unsupported" << endl;
-      return false;
-    }
-    else if (child_name == "image")
-    {
-      object_type = SF_OBJECT_TYPE_UNKNOWN;
-      cout << "Image objects unsupported" << endl;
-      return false;
-    }
-    else
-    {
-      object_type = SF_OBJECT_TYPE_UNKNOWN;
-      cout << "Unknown object type" << endl;
-      return false;
-    }
-  }
-  else
-    return false;
+	const XMLElement* child_element = _element->FirstChildElement();
+	if (child_element != nullptr)
+	{
+		string child_name = child_element->Name();
+
+		if (child_name == "ellipse")
+		{
+			object_type = SF_OBJECT_TYPE_UNKNOWN;
+			cout << "Ellipse objects unsupported" << endl;
+			return false;
+		}
+		else if (child_name == "polygon")
+		{
+			object_type = SF_OBJECT_TYPE_UNKNOWN;
+			cout << "Polygon objects unsupported" << endl;
+			return false;
+		}
+		else if (child_name == "polyline")
+		{
+			object_type = SF_OBJECT_TYPE_UNKNOWN;
+			cout << "Polyline objects unsupported" << endl;
+			return false;
+		}
+		else if (child_name == "image")
+		{
+			object_type = SF_OBJECT_TYPE_UNKNOWN;
+			cout << "Image objects unsupported" << endl;
+			return false;
+		}
+		else
+		{
+			object_type = SF_OBJECT_TYPE_UNKNOWN;
+			cout << "Unknown object type" << endl;
+			return false;
+		}
+	}
+	else
+		return false;
+
+
 }
 
 }

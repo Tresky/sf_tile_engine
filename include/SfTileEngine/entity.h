@@ -20,8 +20,8 @@
 #define SF_ENTITY_H
 
 #include <iostream>
-  using std::cout;
-  using std::endl;
+	using std::cout;
+	using std::endl;
 
 #include <SFML\Graphics.hpp>
 
@@ -34,49 +34,70 @@ namespace sftile
 /// Private engine namespace
 namespace priv
 {
-  class TilemapLoader;
+	class TilemapLoader;
 }
 
+////////////////////////////////////////////////////////////
+/// \class Entity
+/// \brief An abstract class that provides the basis for an
+///				 entity system in the engine. 
+///
+/// To successfully use this class, you need to create your
+/// own class. Your class should inherit this class as a
+/// base and redefine all of the functions provided in this
+/// class.
+/// You should then create a point of your custom-type and
+/// call the tilemap object to create your entity as shown:
+///
+/// Character character = tilemap->AddEntity("file.ent");
+///
+////////////////////////////////////////////////////////////
 class SF_TILE_API Entity
 {
 friend class priv::TilemapLoader;
 public:
-  ////////////////////////////////////////////////////////////
-  /// \brief Default constructor
-  ///
-  /// Constructs an empty entity.
-  ///
-  ////////////////////////////////////////////////////////////
-  explicit Entity();
+	////////////////////////////////////////////////////////////
+	/// \brief Set the position of the entity in tiles
+	///
+	/// \param _window SFML window to render to
+	///
+	////////////////////////////////////////////////////////////
+	virtual void SetPosition(const float _x, const float _y) = 0;
+
+	////////////////////////////////////////////////////////////
+	/// \brief Returns the entity's current position in tiles.
+	///
+	/// \return Current position of the entity in tiles.
+	///
+	////////////////////////////////////////////////////////////
+	virtual sf::Vector2i GetPosition() = 0;
 
 
-  ////////////////////////////////////////////////////////////
-  /// \brief Copy constructor
-  ///
-  /// Copies an existing tile map.
-  ///
-  ////////////////////////////////////////////////////////////
-  explicit Entity(const Entity& _copy);
+	////////////////////////////////////////////////////////////
+	/// \brief Moves the entity in the x-y plane with respect to
+	///				 the current position of the entity.
+	///
+	/// \param _x Distance to move in the X direction
+	/// \param _y Distance to move in the Y direction
+	///
+	////////////////////////////////////////////////////////////
+	virtual void Move(const float _x, const float _y) = 0;
+
+protected:
+	////////////////////////////////////////////////////////////
+	/// \brief Updates the entity.
+	///
+	////////////////////////////////////////////////////////////
+	virtual void Update() = 0;
 
 
-  ////////////////////////////////////////////////////////////
-  /// \brief Assignment operator
-  ///
-  /// Copies an existing tile map.
-  ///
-  ////////////////////////////////////////////////////////////
-  Entity& operator=(const Entity& _copy);
-
-
-  ////////////////////////////////////////////////////////////
-  /// \brief Renders the entity.
-  ///
-  /// \param _window SFML window to render to
-  ///
-  ////////////////////////////////////////////////////////////
-  void Render(sf::RenderWindow& _window);
-
-private:
+	////////////////////////////////////////////////////////////
+	/// \brief Renders the entity.
+	///
+	/// \param _window SFML window to render to
+	///
+	////////////////////////////////////////////////////////////
+	virtual void Render(sf::RenderWindow& _window) = 0;
 };
 
 }

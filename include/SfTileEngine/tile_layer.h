@@ -20,15 +20,16 @@
 #define SF_TILE_LAYER_H
 
 #include <iostream>
-  using std::cout;
-  using std::endl;
+	using std::cout;
+	using std::endl;
 #include <string>
-  using std::string;
+	using std::string;
 #include <vector>
-  using std::vector;
+	using std::vector;
 
 #include <SFML\Graphics.hpp>
 
+#include "layer.h"
 #include "dll_macro.h"
 
 /// Engine namespace
@@ -40,54 +41,104 @@ namespace priv
 {
 class TilemapLoader;
 
-class SF_TILE_API TileLayer
+class SF_TILE_API TileLayer : public Layer
 {
 friend class TilemapLoader;
 public:
-  ////////////////////////////////////////////////////////////
-  /// \brief Default constructor
-  ///
-  /// Creates an empty tile layer object.
-  ///
-  ////////////////////////////////////////////////////////////
-  explicit TileLayer();
+	////////////////////////////////////////////////////////////
+	/// \brief Default constructor
+	///
+	/// Creates an empty tile layer object.
+	///
+	////////////////////////////////////////////////////////////
+	explicit TileLayer();
 
 
-  ////////////////////////////////////////////////////////////
-  /// \brief Copy constructor
-  ///
-  /// Copies an existing tile layer.
-  ///
-  ////////////////////////////////////////////////////////////
-  TileLayer(const TileLayer& _copy);
+	////////////////////////////////////////////////////////////
+	/// \brief Copy constructor
+	///
+	/// Copies an existing tile layer.
+	///
+	////////////////////////////////////////////////////////////
+	TileLayer(const TileLayer& _copy);
 
 
-  ////////////////////////////////////////////////////////////
-  /// \brief Assignment operator
-  ///
-  /// Copies an existing tile layer.
-  ///
-  ////////////////////////////////////////////////////////////
-  TileLayer& operator=(const TileLayer& _copy);
+	////////////////////////////////////////////////////////////
+	/// \brief Move constructor
+	///
+	/// Move an existing tile layer.
+	///
+	////////////////////////////////////////////////////////////
+	TileLayer(TileLayer&& _copy);
 
 
-  ////////////////////////////////////////////////////////////
-  /// \brief Gets the tile GID at a specific location in the
-  ///        layer.
-  ///
-  /// \param _x X coordinate of the tile
-  /// \param _y Y coordinate of the tile
-  /// \return GID of the tile in question
-  ///
-  ////////////////////////////////////////////////////////////
-  int GetTileGID(const int _x, const int _y);
+	////////////////////////////////////////////////////////////
+	/// \brief Assignment operator
+	///
+	/// Copies an existing tile layer.
+	///
+	////////////////////////////////////////////////////////////
+	TileLayer& operator=(const TileLayer& _copy);
+
+
+	////////////////////////////////////////////////////////////
+	/// \brief Move assignment operator
+	///
+	/// Moves an existing tile layer.
+	///
+	////////////////////////////////////////////////////////////
+	TileLayer& operator=(TileLayer&& _copy);
+
+
+	////////////////////////////////////////////////////////////
+	/// \brief Gets the tile GID at a specific location in the
+	///        layer.
+	///
+	/// \param _x X coordinate of the tile
+	/// \param _y Y coordinate of the tile
+	/// \return GID of the tile in question
+	///
+	////////////////////////////////////////////////////////////
+	int GetTileGID(const int _x, const int _y);
+
+
+	////////////////////////////////////////////////////////////
+	/// \brief Returns the name of the layer.
+	///
+	/// \return String name of the layer
+	///
+	////////////////////////////////////////////////////////////
+	string GetName();
+
+
+	////////////////////////////////////////////////////////////
+	/// \brief Returns the type of the layer.
+	///
+	/// \return String type of the layer
+	///
+	////////////////////////////////////////////////////////////
+	string GetType();
+
+
+	////////////////////////////////////////////////////////////
+	/// \brief Returns the size of the layer.
+	///
+	/// \return Dimensions of the layer.
+	///
+	////////////////////////////////////////////////////////////
+	sf::Vector2i GetDimensions();
 
 protected:
-  /// Vector of the tile GIDs in the layer
-  vector< vector<int> > tile_gids;
+	/// Name of layer
+	string name;
 
-  /// Tile dimensions in pixels
-  sf::Vector2i layer_dimensions;
+
+	/// Vector of the tile GIDs in the layer
+	vector< vector<int> > tile_gids;
+
+
+	/// Tile dimensions in pixels
+	sf::Vector2i layer_dimensions;
 
 };
 

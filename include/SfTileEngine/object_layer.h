@@ -20,15 +20,16 @@
 #define SF_OBJECT_LAYER_H
 
 #include <iostream>
-  using std::cout;
-  using std::endl;
+	using std::cout;
+	using std::endl;
 #include <string>
-  using std::string;
+	using std::string;
 #include <vector>
-  using std::vector;
+	using std::vector;
 
 #include <SFML\Graphics.hpp>
 
+#include "layer.h"
 #include "object.h"
 #include "dll_macro.h"
 
@@ -52,75 +53,96 @@ class TilemapLoader;
 ///
 ////////////////////////////////////////////////////////////
 
-class SF_TILE_API ObjectLayer
+class SF_TILE_API ObjectLayer : public Layer
 {
 friend class TilemapLoader;
 public:
-  ////////////////////////////////////////////////////////////
-  /// \brief Default constructor
-  ///
-  /// Creates an empty ObjectLayer object.
-  ///
-  ////////////////////////////////////////////////////////////
-  explicit ObjectLayer();
+	////////////////////////////////////////////////////////////
+	/// \brief Default constructor
+	///
+	/// Creates an empty ObjectLayer object.
+	///
+	////////////////////////////////////////////////////////////
+	explicit ObjectLayer();
 
 
-  ////////////////////////////////////////////////////////////
-  /// \brief Copy constructor
-  ///
-  /// Copies an existing layer.
-  ///
-  ////////////////////////////////////////////////////////////
-  ObjectLayer(const ObjectLayer& _copy);
+	////////////////////////////////////////////////////////////
+	/// \brief Copy constructor
+	///
+	/// Copies an existing layer.
+	///
+	////////////////////////////////////////////////////////////
+	ObjectLayer(const ObjectLayer& _copy);
 
 
-  ////////////////////////////////////////////////////////////
-  /// \brief Assignment operator
-  ///
-  /// Copies an existing layer.
-  ///
-  ////////////////////////////////////////////////////////////
-  ObjectLayer& operator=(const ObjectLayer& _copy);
+	////////////////////////////////////////////////////////////
+	/// \brief Assignment operator
+	///
+	/// Copies an existing layer.
+	///
+	////////////////////////////////////////////////////////////
+	ObjectLayer& operator=(const ObjectLayer& _copy);
 
 
-  ////////////////////////////////////////////////////////////
-  /// \brief Returns the name of the layer
-  ///
-  /// \return String name of the layer
-  ///
-  ////////////////////////////////////////////////////////////
-  string GetName();
+	////////////////////////////////////////////////////////////
+	/// \brief Returns a pointer to an object in the layer
+	///
+	/// \param _index Index of the object to return
+	///
+	/// \return Pointer to the indexed object
+	///
+	////////////////////////////////////////////////////////////
+	Object* GetObject(unsigned int _index);
 
 
-  ////////////////////////////////////////////////////////////
-  /// \brief Returns a pointer to an object in the layer
-  ///
-  /// \param _index Index of the object to return
-  ///
-  /// \return Pointer to the indexed object
-  ///
-  ////////////////////////////////////////////////////////////
-  Object* GetObject(unsigned int _index);
+	int GetNumObjects();
+
+
+	////////////////////////////////////////////////////////////
+	/// \brief Returns the name of the layer.
+	///
+	/// \return String name of the layer
+	///
+	////////////////////////////////////////////////////////////
+	string GetName();
+
+
+	////////////////////////////////////////////////////////////
+	/// \brief Returns the type of the layer.
+	///
+	/// \return String type of the layer
+	///
+	////////////////////////////////////////////////////////////
+	string GetType();
+
+
+	////////////////////////////////////////////////////////////
+	/// \brief Returns the size of the layer.
+	///
+	/// \return Dimensions of the layer.
+	///
+	////////////////////////////////////////////////////////////
+	sf::Vector2i GetDimensions();
 
 private:
-  /// Vector of the objects in the layer
-  vector<Object> objects;
+	/// Vector of the objects in the layer
+	vector<Object> objects;
 
 
-  /// Tile dimensions in pixels
-  sf::Vector2i layer_dimensions;
+	/// Tile dimensions in pixels
+	sf::Vector2i layer_dimensions;
 
 
-  /// Name of the object layer
-  string name;
+	/// Name of the object layer
+	string name;
 
 
-  /// Opacity of the object layer
-  float opacity;
+	/// Opacity of the object layer
+	float opacity;
 
 
-  /// Visibility
-  bool visible;
+	/// Visibility
+	bool visible;
 };
 
 }
